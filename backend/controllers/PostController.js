@@ -26,19 +26,24 @@ module.exports = {
   },
   getPost: (req, res, next) => {
     const postid = req.params.id;
-    Post.findById(postid).populate('author').exec((err, post) => {
-      if (err) res.send(err);
-      else if (!post) res.send(400);
-      else res.send(post);
-      next();
-    });
+    Post.findById(postid)
+      .populate("author")
+      .populate({ path: "comments.author", select: "name" })
+      .exec((err, post) => {
+        if (err) res.send(err);
+        else if (!post) res.send(400);
+        else res.send(post);
+        next();
+      });
   },
   getAllPosts: (req, res, next) => {
-    Post.find().populate('author').exec((err, posts) => {
-      if (err) res.send(err);
-      else if (!posts) res.send(400);
-      else res.send(posts);
-      next();
-    });
+    Post.find()
+      .populate("author")
+      .exec((err, posts) => {
+        if (err) res.send(err);
+        else if (!posts) res.send(400);
+        else res.send(posts);
+        next();
+      });
   },
 };

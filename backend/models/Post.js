@@ -6,7 +6,18 @@ let PostSchema = new mongoose.Schema(
         author : {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
-        }
+        },
+        comments : [
+            {
+                author: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref : 'User'
+                } , 
+                text : String
+            }
+        ]
+
+        
     }
 )
 
