@@ -8,6 +8,9 @@ const app = express();
 const router = express.Router();
 const routes = require("./routes");
 
+router.use(bodyParser.urlencoded({extended:false}));
+router.use(bodyParser.json());
+
 dotenv.config();
 
 mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () =>
