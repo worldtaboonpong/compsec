@@ -16,7 +16,7 @@ class Home extends Component {
         console.log(res.data.username);
         console.log(localStorage.getItem("token"))
       });
-    }, 1500);
+    }, );
   }
   render() {
     return (

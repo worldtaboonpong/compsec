@@ -16,7 +16,7 @@ class Post extends Component {
             }).catch((err) => {
                 $this.props.history.push("/login");
             });
-        }, 1500)
+        }, )
     }
     render() {
         return (
