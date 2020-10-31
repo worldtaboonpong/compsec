@@ -13,6 +13,15 @@ class Register extends Component {
     $this = this;
   }
 
+  componentDidMount(){
+    setTimeout(function(){
+        axios.get("http://localhost:5000/api/auth/user").then((res) => {
+            $this.props.history.push("/home");
+            console.log(res.data);
+        })
+    }, 1500)
+}
+
   handleNameChange(e) {
     $this.setState({
       name: e.target.value,
