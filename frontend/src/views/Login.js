@@ -1,23 +1,16 @@
 import React, { Component } from "react";
-import qs from "qs";
 import axios from "axios";
+import axioApi from './../axioConfig'
 let $this;
-class Register extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       email: "",
       password: "",
-      name: "",
     };
     $this = this;
-  }
-
-  handleNameChange(e) {
-    $this.setState({
-      name: e.target.value,
-    });
   }
   handleEmailChange(e) {
     $this.setState({
@@ -29,39 +22,42 @@ class Register extends Component {
       password: e.target.value,
     });
   }
-  handleSubmit(e) {
+  saveRegister(e) {
     e.preventDefault();
     const user = {
       email: $this.state.email,
       password: $this.state.password,
-      name: $this.state.name,
     };
-    axios.post("http://localhost:5000/api/user", user).then((res) => {
-      $this.props.history.push("/login");
-    });
-  }
+    axios.post("http://localhost:5000/api/auth/login", user).then((res) => {
+      
 
+      if(res.data.auth === true){
+          localStorage.setItem('token', res.data.token);
+          axios.defaults.headers.common['x-access-token'] = res.data.token;
+        
+          $this.props.history.push("/");
+          console.log(res.data.token);
+      }
+    }).catch((err) => {
+        alert('Something wrong');
+        console.log(err);
+        
+    })
+  }
   render() {
     return (
       <div>
-        <h1>Register</h1>
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label>Name</label>
-            <input
-              onChange={this.handleNameChange}
-              type="text"
-              className="form-control"
-              id="exampleInputName"
-            />
-          </div>
+        <br />
+        <h1>Login</h1>
+        <br />
+        <form onSubmit={this.saveRegister}>
           <div className="form-group">
             <label>Email</label>
             <input
               onChange={this.handleEmailChange}
               type="email"
               className="form-control"
-              id="exampleInputEmail"
+              id="email"
             />
           </div>
           <div className="form-group">
@@ -70,8 +66,7 @@ class Register extends Component {
               onChange={this.handlePasswordChange}
               type="password"
               className="form-control"
-              id="exampleInputPassword"
-              placeholder="Password"
+              id="password"
             />
           </div>
           <button type="submit" className="btn btn-primary">
@@ -83,4 +78,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default Login;

@@ -1,8 +1,8 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { Switch, Route, BrowserRouter, Link } from "react-router-dom";
 import Home from "./views/Home.js";
 import Register from "./views/Register.js";
+import Login from './views/Login.js';
 
 function App() {
   return (
@@ -21,6 +21,11 @@ function App() {
                   Register
                 </Link>
               </li>
+              <li className="nav-item ">
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              </li>
             </ul>
           </div>
         </nav>
@@ -29,6 +34,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/register" component={Register} />
+          <Route path="/login" component={Login} />
         </Switch>
       </div>
       <div className="container">Footer</div>
