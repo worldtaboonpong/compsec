@@ -19,7 +19,7 @@ class Register extends Component {
             $this.props.history.push("/");
             console.log(res.data);
         })
-    }, 1500)
+    }, )
 }
 
   handleNameChange(e) {

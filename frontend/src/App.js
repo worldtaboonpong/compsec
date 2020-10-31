@@ -4,6 +4,7 @@ import Home from "./views/Home.js";
 import Register from "./views/Register.js";
 import Login from "./views/Login.js";
 import Post from "./views/Post.js";
+import Admin from "./views/Admin.js"
 import { render } from "react-dom";
 import { Component } from "react";
 import axios from 'axios'
@@ -102,6 +103,7 @@ class App extends Component {
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <Route path="/post" component={Post} />
+            <Route path="/admin" component={Admin} />
           </Switch>
         </div>
         <div className="container">Footer</div>

@@ -12,7 +12,14 @@ class Login extends Component {
     };
     $this = this;
   }
-  
+  componentDidMount(){
+    setTimeout(function(){
+        axios.get("http://localhost:5000/api/auth/user").then((res) => {
+            $this.props.history.push("/");
+            console.log(res.data);
+        })
+    }, 1500)
+  }
   handleEmailChange(e) {
     $this.setState({
       email: e.target.value,
