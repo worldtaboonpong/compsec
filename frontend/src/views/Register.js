@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import qs from "qs";
 import axios from "axios";
 let $this;
 class Register extends Component {
@@ -71,7 +70,6 @@ class Register extends Component {
               type="password"
               className="form-control"
               id="exampleInputPassword"
-              placeholder="Password"
             />
           </div>
           <button type="submit" className="btn btn-primary">

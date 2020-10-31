@@ -35,8 +35,13 @@ class Login extends Component {
           localStorage.setItem('token', res.data.token);
           axios.defaults.headers.common['x-access-token'] = res.data.token;
         
-          $this.props.history.push("/");
-          console.log(res.data.token);
+        //   $this.props.history.push("/");
+        $this.props.history.push({
+            pathname : '/',
+            redirectfrom: 'login'
+
+        })
+
       }
     }).catch((err) => {
         alert('Something wrong');

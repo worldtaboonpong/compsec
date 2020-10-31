@@ -8,11 +8,12 @@ import { BrowserRouter } from "react-router-dom";
 // import Popper from 'popper.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import axioApi from './axioConfig'
+import axios from 'axios'
 
-// let token = localStorage.getItem('token');
-// if (token) {
-//   axioApi.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
-// }
+let token = localStorage.getItem('token');
+if (token) {
+  axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
+}
 
 ReactDOM.render(
   <BrowserRouter>
