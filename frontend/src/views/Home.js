@@ -13,7 +13,7 @@ class Home extends Component {
     }
     setTimeout(function () {
       axios.get("http://localhost:5000/api/auth/user").then((res) => {
-        console.log(res.data);
+        console.log(res.data.username);
       });
     }, 1500);
   }

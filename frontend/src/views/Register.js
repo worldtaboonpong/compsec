@@ -8,7 +8,7 @@ class Register extends Component {
     this.state = {
       email: "",
       password: "",
-      name: "",
+      username: "",
     };
     $this = this;
   }
@@ -24,7 +24,7 @@ class Register extends Component {
 
   handleNameChange(e) {
     $this.setState({
-      name: e.target.value,
+      username: e.target.value,
     });
   }
   handleEmailChange(e) {
@@ -42,7 +42,7 @@ class Register extends Component {
     const user = {
       email: $this.state.email,
       password: $this.state.password,
-      name: $this.state.name,
+      username: $this.state.username,
     };
     axios.post("http://localhost:5000/api/user", user).then((res) => {
       $this.props.history.push("/login");
@@ -55,7 +55,7 @@ class Register extends Component {
         <h1>Register</h1>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label>Name</label>
+            <label>Username</label>
             <input
               onChange={this.handleNameChange}
               type="text"

@@ -12,6 +12,7 @@ class Login extends Component {
     };
     $this = this;
   }
+  
   handleEmailChange(e) {
     $this.setState({
       email: e.target.value,
