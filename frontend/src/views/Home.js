@@ -14,6 +14,7 @@ class Home extends Component {
     setTimeout(function () {
       axios.get("http://localhost:5000/api/auth/user").then((res) => {
         console.log(res.data.username);
+        console.log(localStorage.getItem("token"))
       });
     }, 1500);
   }

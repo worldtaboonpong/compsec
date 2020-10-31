@@ -6,10 +6,42 @@ import Login from "./views/Login.js";
 import Post from "./views/Post.js";
 import { render } from "react-dom";
 import { Component } from "react";
+import axios from 'axios'
+let $this;
 
 let token = localStorage.getItem("token");
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: "",
+      role: "",
+    };
+    $this = this;
+  }
+
+  componentDidMount() {
+    setTimeout(function () {
+      axios.get("http://localhost:5000/api/auth/user").then((res) => {
+        $this.setState({
+          username: res.data.username,
+          role: res.data.role,
+        });
+      });
+    }, 1500);
+  }
+
+  showName() {
+    let showname
+    if (token) {
+      const username = $this.state.username;
+      showname = <h1 className="nav-link">{username}</h1>;
+    }
+    return showname;
+  }
+
   showLogin() {
     let loginorlogout = (
       <Link className="nav-link" to="/login">
@@ -59,6 +91,7 @@ class App extends Component {
                 </li>
                 <li className="nav-item ">{this.showRegisterorPost()}</li>
                 <li className="nav-item ">{this.showLogin()}</li>
+                <li className="nav-item">{this.showName()}</li>
               </ul>
             </div>
           </nav>
