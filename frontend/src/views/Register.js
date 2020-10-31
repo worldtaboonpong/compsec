@@ -16,7 +16,7 @@ class Register extends Component {
   componentDidMount(){
     setTimeout(function(){
         axios.get("http://localhost:5000/api/auth/user").then((res) => {
-            $this.props.history.push("/home");
+            $this.props.history.push("/");
             console.log(res.data);
         })
     }, 1500)
