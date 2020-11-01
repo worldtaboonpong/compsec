@@ -1,6 +1,19 @@
 import React, { Component } from "react";
 import axios from "axios";
 let $this;
+
+function emailIsValid(email) {
+  return /\S+@\S+\.\S+/.test(email);
+}
+
+const formValid = (formErrors) => {
+  let valid = true;
+  Object.values(formErrors).forEach((val) => {
+    if (val.length > 0) valid = false;
+  });
+  return valid;
+};
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -8,45 +21,90 @@ class Register extends Component {
     this.state = {
       email: "",
       password: "",
+      confirmedpassword: "",
       username: "",
+      formErrors: {
+        username: "",
+        email: "",
+        password: "",
+        confirmedpassword: "",
+      },
     };
     $this = this;
   }
 
-  componentDidMount(){
-    setTimeout(function(){
-        axios.get("http://localhost:5000/api/auth/user").then((res) => {
-            $this.props.history.push("/");
-            console.log(res.data);
-        })
-    }, )
-}
+  componentDidMount() {
+    setTimeout(function () {
+      axios.get("http://localhost:5000/api/auth/user").then((res) => {
+        $this.props.history.push("/");
+        console.log(res.data);
+      });
+    });
+  }
 
   handleNameChange(e) {
+    e.preventDefault();
+    let formErrors = $this.state.formErrors;
+    formErrors.username =
+      e.target.value.length < 6 && e.target.value.length > 0
+        ? "Minimum 6 characters required"
+        : "";
     $this.setState({
+      formErrors,
       username: e.target.value,
     });
   }
   handleEmailChange(e) {
+    e.preventDefault();
+    let formErrors = $this.state.formErrors;
+    formErrors.email =
+      emailIsValid(e.target.value) && e.target.value.length > 0
+        ? ""
+        : "Invalid email address";
     $this.setState({
+      formErrors,
       email: e.target.value,
     });
   }
   handlePasswordChange(e) {
+    e.preventDefault();
+    let formErrors = $this.state.formErrors;
+    formErrors.password =
+      e.target.value.length < 6 && e.target.value.length > 0
+        ? "Minimum 6 characters required"
+        : "";
     $this.setState({
+      formErrors,
       password: e.target.value,
     });
   }
-  handleSubmit(e) {
+  handleConfirmPasswordChange(e) {
     e.preventDefault();
-    const user = {
-      email: $this.state.email,
-      password: $this.state.password,
-      username: $this.state.username,
-    };
-    axios.post("http://localhost:5000/api/user", user).then((res) => {
-      $this.props.history.push("/login");
+    let formErrors = $this.state.formErrors;
+    formErrors.confirmedpassword =
+      e.target.value !== $this.state.password
+        ? "You need to confirm the same password"
+        : "";
+    $this.setState({
+      formErrors,
+      confirmedpassword: e.target.value,
     });
+  }
+
+  handleSubmit(e) {
+    if (formValid($this.state.formErrors)) {
+      e.preventDefault();
+      const user = {
+        email: $this.state.email,
+        password: $this.state.password,
+        username: $this.state.username,
+      };
+      axios.post("http://localhost:5000/api/user", user).then((res) => {
+        $this.props.history.push("/login");
+      });
+    } else {
+      alert("Please fill the form correctly");
+    }
   }
 
   render() {
@@ -63,6 +121,7 @@ class Register extends Component {
               id="exampleInputName"
             />
           </div>
+          <div className="errorMessage">{$this.state.formErrors.username}</div>
           <div className="form-group">
             <label>Email</label>
             <input
@@ -72,6 +131,7 @@ class Register extends Component {
               id="exampleInputEmail"
             />
           </div>
+          <div className="errorMessage">{$this.state.formErrors.email}</div>
           <div className="form-group">
             <label>Password</label>
             <input
@@ -81,6 +141,17 @@ class Register extends Component {
               id="exampleInputPassword"
             />
           </div>
+          <div className="errorMessage">{$this.state.formErrors.password}</div>
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input
+              onChange={this.handleConfirmPasswordChange}
+              type="password"
+              className="form-control"
+              id="exampleInputCOnfrimPassword"
+            />
+          </div>
+          <div className="errorMessage">{$this.state.formErrors.confirmedpassword}</div>
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
