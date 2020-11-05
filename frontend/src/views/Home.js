@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import axioApi from "./../axioConfig";
+import { Header, Container} from 'semantic-ui-react'
 
 class Home extends Component {
   constructor(props) {
@@ -20,9 +21,27 @@ class Home extends Component {
   }
   render() {
     return (
-      <div>
-        <h1>Home</h1>
-      </div>
+      <Container text textAlign='center'>
+    <Header
+      as='h1'
+      content='Welcome'
+      style={{
+        fontSize: '4em',
+        fontWeight: 'normal',
+        marginBottom: 0,
+        marginTop: '3em',
+      }}
+    />
+    <Header
+      as='h2'
+      content='Do whatever you want when you want to.'
+      style={{
+        fontSize: '1.7em',
+        fontWeight: 'normal',
+        marginBottom: '1em',
+      }}
+    />
+  </Container>
     );
   }
 }

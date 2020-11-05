@@ -108,7 +108,6 @@ class App extends Component {
             <Route path="/create-post" component={CreatePost} />
           </Switch>
         </div>
-        <div className="container">Footer</div>
       </div>
     );
   }
