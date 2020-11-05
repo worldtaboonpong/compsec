@@ -10,6 +10,7 @@ class Post extends Component {
 
     this.state = {
       posts: [],
+      user: []
     };
 
     $this = this;
@@ -26,6 +27,9 @@ class Post extends Component {
         .get("http://localhost:5000/api/auth/user")
         .then((res) => {
           console.log(res.data);
+          this.setState({
+            user: res.data,
+          });
         })
         .catch((err) => {
           $this.props.history.push("/login");
@@ -56,14 +60,29 @@ class Post extends Component {
 class PostItem extends Component {
   constructor(props) {
     super(props);
+    
   }
 
-  showName() {
-    console.log(this.props.post.author);
-    return this.props.post.author.map(function (author) {
-      return <p>{author.name}</p>;
-    });
+
+  showEdit() {
+    let editButton;
+    if (this.props.post.author == this.props.user) {
+      editButton = (
+        <a className="nav-link" href="" onClick={this.edit}>
+          Edit
+        </a>
+      );
+    }
+    return editButton;
   }
+  edit() {}
+
+  //   showName() {
+  //     console.log(this.props.post.author);
+  //     return this.props.post.author.map(function (author) {
+  //       return <p>{author.name}</p>;
+  //     });
+  //   }
   render() {
     return (
       <div>
@@ -73,10 +92,12 @@ class PostItem extends Component {
           <h1>Description</h1>
           <p>{this.props.post.description}</p>
           <h1>By</h1>
-        todo
+          todo
           {/* {this.props.post.author.map(function (author) {
             <p>{author.name}</p>;
           })} */}
+          {this.showEdit()}
+          {/* {this.showDelete()} */}
         </div>
       </div>
     );
