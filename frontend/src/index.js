@@ -9,6 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import axioApi from './axioConfig'
 import axios from 'axios'
+import 'semantic-ui-css/semantic.min.css'
 
 let token = localStorage.getItem('token');
 if (token) {
