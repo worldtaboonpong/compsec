@@ -10,6 +10,7 @@ class Post extends Component {
 
         this.state = {
             posts: [],
+            user: [],
         };
 
         $this = this;
@@ -25,6 +26,7 @@ class Post extends Component {
             axios
                 .get("http://localhost:5000/api/auth/user")
                 .then((res) => {
+                    $this.setState({ user: res.data.username });
                     console.log(res.data);
                 })
                 .catch((err) => {
@@ -36,7 +38,7 @@ class Post extends Component {
     showPost() {
         return $this.state.posts.map(function (post, i) {
             console.log(post);
-            return <PostItem post={post} key={i} />;
+            return <PostItem post={post} key={i} user={$this.state.user} />;
         });
     }
 
@@ -58,10 +60,58 @@ class PostItem extends Component {
         super(props);
     }
 
-    showLog() {
-        console.log(this.props.post.author);
-        console.log(this.props.post.author.username);
-        console.log("----------");
+    // edit(id) {
+    //   axios
+    //   .post("http://localhost:5000/api/post", {_id:id,post})
+    //   .then((res) => {
+    //     $this.props.history.push("/post");
+    //   })
+    //   .catch((err) => {
+    //     alert("Something wrong");
+    //     console.log(err);
+    //   });
+    // }
+
+    showEdit() {
+        let editButton;
+        if (this.props.post.author.username == this.props.user) {
+            editButton = (
+                <Link to={"/editPost" + this.props.post._id}>
+                    <a className="nav-link" href="">
+                        Edit
+                    </a>
+                </Link>
+            );
+        }
+        return editButton;
+    }
+
+    delete(id) {
+        axios
+            .post("http://localhost:5000/api/deletePost", { _id: id })
+            .then((res) => {
+                console.log(res.data);
+                $this.props.history.push("/post");
+            })
+            .catch((err) => {
+                alert("error", err);
+            });
+    }
+
+    showDelete() {
+        let deleteButton;
+        if (this.props.post.author.username == this.props.user) {
+            deleteButton = (
+                <a
+                    className="nav-link"
+                    href=""
+                    onClick={() => this.delete(this.props.post._id)}
+                >
+                    Delete
+                </a>
+            );
+        }
+        return deleteButton;
     }
 
     showName() {
@@ -80,6 +130,8 @@ class PostItem extends Component {
                     <p>{this.props.post.description}</p>
                     <h1>By</h1>
                     <p>{this.props.post.author.username}</p>
+                    {this.showEdit()}
+                    {this.showDelete()}
                 </div>
             </div>
         );
