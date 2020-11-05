@@ -9,6 +9,7 @@ class CreatePost extends Component {
     this.state = {
       title: "",
       description: "",
+      author:''
     };
 
     $this = this;
@@ -18,6 +19,9 @@ class CreatePost extends Component {
       axios
         .get("http://localhost:5000/api/auth/user")
         .then((res) => {
+            $this.setState({
+                author : res.data.id
+            })
           console.log(res.data);
         })
         .catch((err) => {
@@ -45,6 +49,7 @@ class CreatePost extends Component {
     const post = {
       title: $this.state.title,
       description: $this.state.description,
+      author: $this.state.author
     };
     axios
       .post("http://localhost:5000/api/post", post)
