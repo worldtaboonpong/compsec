@@ -53,23 +53,16 @@ class Post extends Component {
   }
 }
 
-
 class PostItem extends Component {
   constructor(props) {
     super(props);
-  
   }
 
-  showName(){
-      console.log(this.props.post.author)
-    //   return this.props.post.author.map(function(author){
-    //       return (
-    //           <p>
-    //               {author.name}
-    //           </p>
-    //       )
-    //   })
-      
+  showName() {
+    console.log(this.props.post.author);
+    return this.props.post.author.map(function (author) {
+      return <p>{author.name}</p>;
+    });
   }
   render() {
     return (
@@ -80,9 +73,10 @@ class PostItem extends Component {
           <h1>Description</h1>
           <p>{this.props.post.description}</p>
           <h1>By</h1>
-         
-            {this.showName()}
-          
+        todo
+          {/* {this.props.post.author.map(function (author) {
+            <p>{author.name}</p>;
+          })} */}
         </div>
       </div>
     );
