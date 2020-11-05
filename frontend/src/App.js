@@ -8,6 +8,7 @@ import Admin from "./views/Admin.js"
 import { render } from "react-dom";
 import { Component } from "react";
 import axios from 'axios'
+import CreatePost from "./views/CreatePost";
 let $this;
 
 let token = localStorage.getItem("token");
@@ -104,6 +105,7 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/post" component={Post} />
             <Route path="/admin" component={Admin} />
+            <Route path="/create-post" component={CreatePost} />
           </Switch>
         </div>
         <div className="container">Footer</div>
