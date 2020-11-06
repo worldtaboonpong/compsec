@@ -81,9 +81,7 @@ class PostItem extends Component {
         ) {
             editButton = (
                 <Link to={"/editPost" + this.props.post._id}>
-                    <a className="nav-link" href="">
-                        Edit
-                    </a>
+                    <Button color="blue">Edit</Button>
                 </Link>
             );
         }
@@ -109,12 +107,8 @@ class PostItem extends Component {
             this.props.role === 1
         ) {
             deleteButton = (
-                <a
-                    className="nav-link"
-                    href=""
-                    onClick={() => this.delete(this.props.post._id)}
-                >
-                    Delete
+                <a href="" onClick={() => this.delete(this.props.post._id)}>
+                    <Button color="blue">Delete</Button>
                 </a>
             );
         }
@@ -148,13 +142,15 @@ class PostItem extends Component {
                                 size="small"
                                 src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
                             />
-                            <Card.Header>By</Card.Header>
+                            <Card.Header>
+                                By {this.props.post.author.username}
+                            </Card.Header>
                             <Card.Meta>
                                 <b>{this.props.post.title}</b>
                             </Card.Meta>
                             <Card.Meta>{this.props.post.description}</Card.Meta>
                             <Card.Description>
-                                {this.props.post.Description}
+                                {this.showEdit()} {this.showDelete()}
                             </Card.Description>
                         </Card.Content>
                     </Card>
