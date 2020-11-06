@@ -13,6 +13,7 @@ class Post extends Component {
             posts: [],
             user: [],
             role: [],
+            author : ''
         };
 
         $this = this;
@@ -31,6 +32,7 @@ class Post extends Component {
                     $this.setState({
                         user: res.data.username,
                         role: res.data.role,
+                        author : res.data.id
                     });
                     console.log(res.data);
                 })
@@ -115,6 +117,26 @@ class PostItem extends Component {
         return deleteButton;
     }
 
+    showComment(){
+        if (this.props.post.comment instanceof Array){
+            return this.props.post.comment.map(function(comment,i){
+                return (
+                    <div key={i}>
+                        <p>Author Name</p>
+                    </div>
+                )
+            })
+        }
+    }
+
+    showCommentBox(){
+        return (
+            <textarea>
+
+            </textarea>
+        )
+    }
+
  
     render() {
         return (
@@ -144,6 +166,8 @@ class PostItem extends Component {
                                 <b>{this.props.post.title}</b>
                             </Card.Meta>
                             <Card.Meta>{this.props.post.description}</Card.Meta>
+                            <Card.Meta>{this.showComment()}</Card.Meta>
+                            <Card.Meta>{this.showCommentBox()}</Card.Meta>
                             <Card.Description>
                                 {this.showEdit()} {this.showDelete()}
                             </Card.Description>
