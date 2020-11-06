@@ -115,12 +115,7 @@ class PostItem extends Component {
         return deleteButton;
     }
 
-    showName() {
-        console.log(this.props.post.author);
-        return this.props.post.author.map(function (author) {
-            return <p>{author.name}</p>;
-        });
-    }
+ 
     render() {
         return (
             <div>
