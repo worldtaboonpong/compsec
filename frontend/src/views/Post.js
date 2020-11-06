@@ -11,6 +11,7 @@ class Post extends Component {
         this.state = {
             posts: [],
             user: [],
+            role: [],
         };
 
         $this = this;
@@ -26,7 +27,10 @@ class Post extends Component {
             axios
                 .get("http://localhost:5000/api/auth/user")
                 .then((res) => {
-                    $this.setState({ user: res.data.username });
+                    $this.setState({
+                        user: res.data.username,
+                        role: res.data.role,
+                    });
                     console.log(res.data);
                 })
                 .catch((err) => {
@@ -38,7 +42,14 @@ class Post extends Component {
     showPost() {
         return $this.state.posts.map(function (post, i) {
             console.log(post);
-            return <PostItem post={post} key={i} user={$this.state.user} />;
+            return (
+                <PostItem
+                    post={post}
+                    key={i}
+                    user={$this.state.user}
+                    role={$this.state.role}
+                />
+            );
         });
     }
 
@@ -60,21 +71,12 @@ class PostItem extends Component {
         super(props);
     }
 
-    // edit(id) {
-    //   axios
-    //   .post("http://localhost:5000/api/post", {_id:id,post})
-    //   .then((res) => {
-    //     $this.props.history.push("/post");
-    //   })
-    //   .catch((err) => {
-    //     alert("Something wrong");
-    //     console.log(err);
-    //   });
-    // }
-
     showEdit() {
         let editButton;
-        if (this.props.post.author.username == this.props.user) {
+        if (
+            this.props.post.author.username == this.props.user ||
+            this.props.role === 1
+        ) {
             editButton = (
                 <Link to={"/editPost" + this.props.post._id}>
                     <a className="nav-link" href="">
@@ -100,7 +102,10 @@ class PostItem extends Component {
 
     showDelete() {
         let deleteButton;
-        if (this.props.post.author.username == this.props.user) {
+        if (
+            this.props.post.author.username == this.props.user ||
+            this.props.role === 1
+        ) {
             deleteButton = (
                 <a
                     className="nav-link"
