@@ -3,6 +3,8 @@ import axios from "axios";
 import axioApi from "./../axioConfig";
 import { Header, Container} from 'semantic-ui-react'
 
+let token = localStorage.getItem("token");
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +21,7 @@ class Home extends Component {
       });
     }, );
   }
+
   render() {
     return (
       <Container text textAlign='center'>
@@ -34,7 +37,7 @@ class Home extends Component {
     />
     <Header
       as='h2'
-      content='Do whatever you want when you want to.'
+      content= {token? 'Enjoy!' : 'Please Login'}
       style={{
         fontSize: '1.7em',
         fontWeight: 'normal',
