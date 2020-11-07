@@ -6,14 +6,16 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 // import $ from 'jquery';
 // import Popper from 'popper.js'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import axioApi from './axioConfig'
-import axios from 'axios'
-import 'semantic-ui-css/semantic.min.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import axioApi from "./axioConfig";
+import axios from "axios";
+import "semantic-ui-css/semantic.min.css";
 
-let token = localStorage.getItem('token');
+let token = localStorage.getItem("token");
 if (token) {
-  axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token');
+  axios.defaults.headers.common["x-access-token"] = localStorage.getItem(
+    "token"
+  );
 }
 
 ReactDOM.render(

@@ -4,38 +4,39 @@ import Home from "./views/Home.js";
 import Register from "./views/Register.js";
 import Login from "./views/Login.js";
 import Post from "./views/Post.js";
-import Admin from "./views/Admin.js"
+import Admin from "./views/Admin.js";
 import { render } from "react-dom";
-import { Component } from "react";
-import axios from 'axios'
+import { React, Component } from "react";
+import axios from "axios";
 import CreatePost from "./views/CreatePost";
 import { Menu, Container, Button, Image, Header } from 'semantic-ui-react'
 import userImage from './user.png'
+import EditPost from "./views/EditPost";
 let $this;
 
 let token = localStorage.getItem("token");
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      username: "",
-      role: "",
-    };
-    $this = this;
-  }
+        this.state = {
+            username: "",
+            role: "",
+        };
+        $this = this;
+    }
 
-  componentDidMount() {
-    setTimeout(function () {
-      axios.get("http://localhost:5000/api/auth/user").then((res) => {
-        $this.setState({
-          username: res.data.username,
-          role: res.data.role,
+    componentDidMount() {
+        setTimeout(function () {
+            axios.get("http://localhost:5000/api/auth/user").then((res) => {
+                $this.setState({
+                    username: res.data.username,
+                    role: res.data.role,
+                });
+            });
         });
-      });
-    }, );
-  }
+    }
 
   showName() {
     let showname
