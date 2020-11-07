@@ -9,6 +9,8 @@ import { render } from "react-dom";
 import { React, Component } from "react";
 import axios from "axios";
 import CreatePost from "./views/CreatePost";
+import { Menu, Container, Button, Image, Header } from 'semantic-ui-react'
+import userImage from './user.png'
 import EditPost from "./views/EditPost";
 let $this;
 
@@ -36,91 +38,51 @@ class App extends Component {
         });
     }
 
-    showName() {
-        let showname;
-        if (token) {
-            const username = $this.state.username;
-            showname = <h1 className="nav-link">{username}</h1>;
-        }
-        return showname;
+  showName() {
+    let showname
+    if (token) {
+      const username = $this.state.username;
+      showname = <Header as='h4' style={{marginBottom: 0}}>
+                  <Image circular src= {userImage} /> {username}
+                  </Header>   
     }
+    return showname;
+  }
 
-    showLogin() {
-        let loginorlogout = (
-            <Link className="nav-link" to="/login">
-                Login
-            </Link>
-        );
-        if (token) {
-            loginorlogout = (
-                <a className="nav-link" href="" onClick={this.logout}>
-                    Logout
-                </a>
-            );
-        }
-        return loginorlogout;
-    }
-    logout() {
-        localStorage.removeItem("token");
-        this.history.push("/");
-    }
-    showRegisterorPost() {
-        let registerorpost = (
-            <Link className="nav-link" to="/register">
-                Register
-            </Link>
-        );
-        if (token) {
-            registerorpost = (
-                <Link className="nav-link" to="/post">
-                    Post
-                </Link>
-            );
-        }
-        return registerorpost;
-    }
+  logout() {
+    localStorage.removeItem("token");
+    this.history.push("/");
+  }
 
-    render() {
-        return (
-            <div>
-                <div className="header">
-                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                        <div
-                            className="collapse navbar-collapse"
-                            id="navbarSupportContent"
-                        >
-                            <ul className="navbar-nav mr-auto container">
-                                <li className="nav-item active">
-                                    <Link className="nav-link" to="/">
-                                        Home
-                                    </Link>
-                                </li>
-                                <li className="nav-item ">
-                                    {this.showRegisterorPost()}
-                                </li>
-                                <li className="nav-item ">
-                                    {this.showLogin()}
-                                </li>
-                                <li className="nav-item">{this.showName()}</li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-                <div className="container">
-                    <Switch>
-                        <Route exact path="/" component={Home} />
-                        <Route path="/register" component={Register} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/post" component={Post} />
-                        <Route path="/editPost:id" component={EditPost} />
-                        <Route path="/admin" component={Admin} />
-                        <Route path="/create-post" component={CreatePost} />
-                    </Switch>
-                </div>
-                <div className="container">Footer</div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <Container>
+              <Menu pointing secondary size='large'>
+                <Menu.Item as='a' href='/'style={{padding: 20}}>Home</Menu.Item>
+                {token? <Menu.Item as='a' href='/post'style={{padding: 20}}>Post</Menu.Item> : null}
+                <Menu.Item position='right'style={{padding: 10}}>
+                  {token? null : <Button as='a' href='/register'style={{margin: 0}}> Register </Button>}
+                  {this.showName()}
+                  {token? <Button as='a' href='' style={{ marginLeft: '1em' }} onClick={this.logout}>Logout</Button> : 
+                  <Button as='a' href='/login' style={{ marginLeft: '0.5em' }}>Login</Button>}
+                </Menu.Item>
+              </Menu>
+        </Container>
+
+        <div className="container">
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/register" component={Register} />
+            <Route path="/login" component={Login} />
+            <Route path="/post" component={Post} />
+            <Route path="/admin" component={Admin} />
+            <Route path="/create-post" component={CreatePost} />
+          </Switch>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
