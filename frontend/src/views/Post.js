@@ -6,142 +6,218 @@ import { Button, Card, Image, Comment, Form, Header } from "semantic-ui-react";
 let $this;
 
 class Post extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            posts: [],
-            user: [],
-            role: [],
-            author : ''
-        };
+    this.state = {
+      posts: [],
+      user: [],
+      role: [],
+      author: "",
+    };
 
-        $this = this;
-    }
-    componentDidMount() {
-        axios.get("http://localhost:5000/api/posts").then((res) => {
-            $this.setState({
-                posts: res.data,
-            });
+    $this = this;
+  }
+  componentDidMount() {
+    axios.get("http://localhost:5000/api/posts").then((res) => {
+      $this.setState({
+        posts: res.data,
+      });
+    });
+
+    setTimeout(function () {
+      axios
+        .get("http://localhost:5000/api/auth/user")
+        .then((res) => {
+          $this.setState({
+            user: res.data.username,
+            role: res.data.role,
+            author: res.data.id,
+          });
+          console.log(res.data);
+        })
+        .catch((err) => {
+          $this.props.history.push("/login");
         });
+    });
+  }
 
-        setTimeout(function () {
-            axios
-                .get("http://localhost:5000/api/auth/user")
-                .then((res) => {
-                    $this.setState({
-                        user: res.data.username,
-                        role: res.data.role,
-                        author : res.data.id
-                    });
-                    console.log(res.data);
-                })
-                .catch((err) => {
-                    $this.props.history.push("/login");
-                });
-        });
-    }
+  showPost() {
+    return $this.state.posts.map(function (post) {
+      console.log(post);
+      return (
+        <PostItem
+          post={post}
+          user={$this.state.user}
+          role={$this.state.role}
+          author={$this.state.author}
+        />
+      );
+    });
+  }
 
-    showPost() {
-        return $this.state.posts.map(function (post, i) {
-            console.log(post);
-            return (
-                <PostItem
-                    post={post}
-                    key={i}
-                    user={$this.state.user}
-                    role={$this.state.role}
-                />
-            );
-        });
-    }
-
-    render() {
-        return (
-            <div>
-                <h1>Post</h1>
-                <Link to="/create-post">
-                    {/* <button className="btn btn-default">Create Post</button> */}
-                    <Button color="blue">Create Post</Button>
-                </Link>
-                <div>{this.showPost()}</div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <h1>Post</h1>
+        <Link to="/create-post">
+          {/* <button className="btn btn-default">Create Post</button> */}
+          <Button color="blue">Create Post</Button>
+        </Link>
+        <div>{this.showPost()}</div>
+      </div>
+    );
+  }
 }
 
 class PostItem extends Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
 
-    showEdit() {
-        let editButton;
-        if (
-            this.props.post.author.username == this.props.user ||
-            this.props.role === 1
-        ) {
-            editButton = (
-                <Link to={"/editPost" + this.props.post._id}>
-                    <Button color="blue">Edit</Button>
-                </Link>
-            );
-        }
-        return editButton;
-    }
+    this.state = {
+      text: "",
+    };
 
-    delete(id) {
-        axios
-            .post("http://localhost:5000/api/deletePost", { _id: id })
-            .then((res) => {
-                console.log(res.data);
-                $this.props.history.push("/post");
-            })
-            .catch((err) => {
-                alert("error", err);
-            });
-    }
+    this.handleCommentChange = this.handleCommentChange.bind(this);
+  }
 
-    showDelete() {
-        let deleteButton;
-        if (
-            this.props.post.author.username == this.props.user ||
-            this.props.role === 1
-        ) {
-            deleteButton = (
-                <a href="" onClick={() => this.delete(this.props.post._id)}>
-                    <Button color="blue">Delete</Button>
-                </a>
-            );
-        }
-        return deleteButton;
+  showEdit() {
+    let editButton;
+    if (
+      this.props.post.author.username == this.props.user ||
+      this.props.role === 1
+    ) {
+      editButton = (
+        <Link to={"/editPost" + this.props.post._id}>
+          <Button color="blue">Edit</Button>
+        </Link>
+      );
     }
+    return editButton;
+  }
 
-    showComment(){
-        if (this.props.post.comment instanceof Array){
-            return this.props.post.comment.map(function(comment,i){
-                return (
-                    <div key={i}>
-                        <p>Author Name</p>
-                    </div>
-                )
-            })
-        }
+  handleCommentChange(e) {
+    this.setState({
+      text: e.target.value,
+    });
+  }
+
+  delete(id) {
+    axios
+      .post("http://localhost:5000/api/deletePost", { _id: id })
+      .then((res) => {
+        console.log(res.data);
+        $this.props.history.push("/post");
+      })
+      .catch((err) => {
+        alert("error", err);
+      });
+  }
+
+  showDelete() {
+    let deleteButton;
+    if (
+      this.props.post.author.username == this.props.user ||
+      this.props.role === 1
+    ) {
+      deleteButton = (
+        <a href="" onClick={() => this.delete(this.props.post._id)}>
+          <Button color="blue">Delete</Button>
+        </a>
+      );
     }
+    return deleteButton;
+  }
 
-    showCommentBox(){
+  showEditComment(username) {
+    console.log(username);
+    console.log(this.props.user);
+    let editButton;
+    if (username == this.props.user || this.props.role === 1) {
+      editButton = (
+        <div>
+          <Button color="blue">Edit</Button>
+        </div>
+      );
+    }
+    return editButton;
+  }
+
+  showComment() {
+    const user = this.props.user;
+    const role = this.props.role;
+    if (this.props.post.comments instanceof Array) {
+      return this.props.post.comments.map(function (comment, i) {
         return (
-            <textarea>
-
-            </textarea>
-        )
+          <div key={i}>
+            <p>
+              {comment.text} by {comment.username}{comment.username === user || role === 1 ? (
+                <div>
+                  <button>Edit</button>
+                </div>
+              ) : (
+                <div></div>
+              )}
+            </p>
+            {/* {this.showEditComment(comment.username)}
+            {() => {
+              this.showDeleteComment(comment.username);
+            }} */}
+          </div>
+        );
+      });
     }
+  }
 
- 
-    render() {
-        return (
-            <div>
-                {/* <div>
+  saveComment(id, author, username) {
+    axios
+      .post("http://localhost:5000/api/savecomment", {
+        id: id,
+        author: author,
+        text: this.state.text,
+        username: username,
+      })
+      .then((res) => {
+        document.getElementById("comment").value = "";
+        this.setState({
+          text: "",
+        });
+        window.location.reload();
+        console.log(username);
+      });
+  }
+
+  showCommentBox() {
+    if (this.props.author != "") {
+      return (
+        <div>
+          <textarea
+            id="comment"
+            placeholder="Comment Here"
+            className="form-control"
+            onChange={this.handleCommentChange}
+          ></textarea>
+          <button
+            className="btn"
+            onClick={() => {
+              this.saveComment(
+                this.props.post._id,
+                this.props.author,
+                this.props.user
+              );
+            }}
+          >
+            Save
+          </button>
+        </div>
+      );
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        {/* <div>
           <h1>Title</h1>
           <p>{this.props.post.title}</p>
           <h1>Description</h1>
@@ -151,32 +227,30 @@ class PostItem extends Component {
           {this.showEdit()}
           {this.showDelete()}
         </div> */}
-                <Card.Group>
-                    <Card fluid color="blue">
-                        <Card.Content>
-                            <Image
-                                floated="left"
-                                size="small"
-                                src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
-                            />
-                            <Card.Header>
-                                By {this.props.post.author.username}
-                            </Card.Header>
-                            <Card.Meta>
-                                <b>{this.props.post.title}</b>
-                            </Card.Meta>
-                            <Card.Meta>{this.props.post.description}</Card.Meta>
-                            <Card.Meta>{this.showComment()}</Card.Meta>
-                            <Card.Meta>{this.showCommentBox()}</Card.Meta>
-                            <Card.Description>
-                                {this.showEdit()} {this.showDelete()}
-                            </Card.Description>
-                        </Card.Content>
-                    </Card>
-                </Card.Group>
-            </div>
-        );
-    }
+        <Card.Group>
+          <Card fluid color="blue">
+            <Card.Content>
+              <Image
+                floated="left"
+                size="small"
+                src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
+              />
+              <Card.Header>By {this.props.post.author.username}</Card.Header>
+              <Card.Meta>
+                <b>{this.props.post.title}</b>
+              </Card.Meta>
+              <Card.Meta>{this.props.post.description}</Card.Meta>
+              <Card.Meta>{this.showComment()}</Card.Meta>
+              <Card.Meta>{this.showCommentBox()}</Card.Meta>
+              <Card.Description>
+                {this.showEdit()} {this.showDelete()}
+              </Card.Description>
+            </Card.Content>
+          </Card>
+        </Card.Group>
+      </div>
+    );
+  }
 }
 
 export default Post;

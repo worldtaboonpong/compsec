@@ -46,4 +46,27 @@ module.exports = {
         next();
       });
   },
+
+  saveComment: (req, res, next) => {
+    const request = req.body;
+    const id = request.id;
+
+    Post.findById(id).exec((err, post) => {
+      if (err) {
+        res.send(err);
+      }
+      post
+        .comment({
+          author: request.author,
+          text: request.text,
+          username : request.username
+        })
+        .then((savedcomment) => {
+          return res.send({
+            result: true,
+            data: savedcomment,
+          });
+        });
+    });
+  },
 };
