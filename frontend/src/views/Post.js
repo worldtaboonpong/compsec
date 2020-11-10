@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Switch, Route, BrowserRouter, Link } from "react-router-dom";
-import { Button, Card, Image, Comment, Form, Header } from "semantic-ui-react";
+import {
+  Button,
+  Card,
+  Image,
+  Comment,
+  Form,
+  Header,
+  Divider,
+  Grid,
+} from "semantic-ui-react";
 
 let $this;
 
@@ -122,7 +131,7 @@ class PostItem extends Component {
     ) {
       deleteButton = (
         <a href="" onClick={() => this.delete(this.props.post._id)}>
-          <Button color="blue">Delete</Button>
+          <Button color="red">Delete</Button>
         </a>
       );
     }
@@ -150,15 +159,41 @@ class PostItem extends Component {
       return this.props.post.comments.map(function (comment, i) {
         return (
           <div key={i}>
-            <p>
-              {comment.text} by {comment.username}{comment.username === user || role === 1 ? (
+            {/* <p>
+              {comment.text} by {comment.username}
+              {comment.username === user || role === 1 ? (
                 <div>
                   <button>Edit</button>
                 </div>
               ) : (
                 <div></div>
               )}
-            </p>
+            </p> */}
+            <Comment.Group minimal>
+              <Comment>
+                <Comment.Content>
+                  <Grid>
+                    <Grid.Column>
+                      <Comment.Avatar
+                        as="a"
+                        src="https://react.semantic-ui.com/images/avatar/small/matt.jpg"
+                        verticalAlign="middle"
+                      />
+                    </Grid.Column>
+                    <Grid.Column width={13}>
+                      <Comment.Author as="a">
+                        By {comment.username}
+                      </Comment.Author>
+                      <Comment.Text>{comment.text}</Comment.Text>
+                    </Grid.Column>
+                    <Grid.Column width={1}>
+                      <Button floated="right">Edit</Button>
+                    </Grid.Column>
+                  </Grid>
+                </Comment.Content>
+              </Comment>
+            </Comment.Group>
+
             {/* {this.showEditComment(comment.username)}
             {() => {
               this.showDeleteComment(comment.username);
@@ -230,16 +265,27 @@ class PostItem extends Component {
         <Card.Group>
           <Card fluid color="blue">
             <Card.Content>
-              <Image
-                floated="left"
-                size="small"
-                src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
-              />
-              <Card.Header>By {this.props.post.author.username}</Card.Header>
-              <Card.Meta>
-                <b>{this.props.post.title}</b>
-              </Card.Meta>
-              <Card.Meta>{this.props.post.description}</Card.Meta>
+              <Grid>
+                <Grid.Column width={2}>
+                  <Image
+                    floated="left"
+                    size="small"
+                    src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
+                    inline
+                  />
+                </Grid.Column>
+                <Grid.Column width={6}>
+                  <Card.Header>
+                    By {this.props.post.author.username}
+                  </Card.Header>
+                  <Card.Meta>
+                    <b>{this.props.post.title}</b>
+                  </Card.Meta>
+                  <Card.Meta>{this.props.post.description}</Card.Meta>
+                </Grid.Column>
+              </Grid>
+            </Card.Content>
+            <Card.Content extra>
               <Card.Meta>{this.showComment()}</Card.Meta>
               <Card.Meta>{this.showCommentBox()}</Card.Meta>
               <Card.Description>
