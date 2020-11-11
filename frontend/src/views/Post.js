@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Switch, Route, BrowserRouter, Link } from "react-router-dom";
-import { Button, Card, Image, Comment, Form, Header } from "semantic-ui-react";
+import {
+    Button,
+    Card,
+    Image,
+    Comment,
+    Form,
+    Header,
+    Divider,
+    Grid,
+} from "semantic-ui-react";
 
 let $this;
 
@@ -13,6 +22,7 @@ class Post extends Component {
             posts: [],
             user: [],
             role: [],
+            author: "",
         };
 
         $this = this;
@@ -31,6 +41,7 @@ class Post extends Component {
                     $this.setState({
                         user: res.data.username,
                         role: res.data.role,
+                        author: res.data.id,
                     });
                     console.log(res.data);
                 })
@@ -41,14 +52,14 @@ class Post extends Component {
     }
 
     showPost() {
-        return $this.state.posts.map(function (post, i) {
+        return $this.state.posts.map(function (post) {
             console.log(post);
             return (
                 <PostItem
                     post={post}
-                    key={i}
                     user={$this.state.user}
                     role={$this.state.role}
+                    author={$this.state.author}
                 />
             );
         });
@@ -71,6 +82,12 @@ class Post extends Component {
 class PostItem extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            text: "",
+        };
+
+        this.handleCommentChange = this.handleCommentChange.bind(this);
     }
 
     showEdit() {
@@ -88,6 +105,12 @@ class PostItem extends Component {
         return editButton;
     }
 
+    handleCommentChange(e) {
+        this.setState({
+            text: e.target.value,
+        });
+    }
+
     delete(id) {
         axios
             .post("http://localhost:5000/api/deletePost", { _id: id })
@@ -96,7 +119,7 @@ class PostItem extends Component {
                 $this.props.history.push("/post");
             })
             .catch((err) => {
-                alert("error", err);
+                alert(err);
             });
     }
 
@@ -108,19 +131,131 @@ class PostItem extends Component {
         ) {
             deleteButton = (
                 <a href="" onClick={() => this.delete(this.props.post._id)}>
-                    <Button color="blue">Delete</Button>
+                    <Button color="red">Delete</Button>
                 </a>
             );
         }
         return deleteButton;
     }
 
-    showName() {
-        console.log(this.props.post.author);
-        return this.props.post.author.map(function (author) {
-            return <p>{author.name}</p>;
-        });
+    showEditComment(username) {
+        console.log(username);
+        console.log(this.props.user);
+        let editButton;
+        if (username == this.props.user || this.props.role === 1) {
+            editButton = (
+                <div>
+                    <Button color="blue">Edit</Button>
+                </div>
+            );
+        }
+        return editButton;
     }
+
+    showComment() {
+        const user = this.props.user;
+        const role = this.props.role;
+        if (this.props.post.comments instanceof Array) {
+            return this.props.post.comments.map(function (comment, i) {
+                return (
+                    <div key={i}>
+                        {/* <p>
+              {comment.text} by {comment.username}
+              {comment.username === user || role === 1 ? (
+                <div>
+                  <button>Edit</button>
+                </div>
+              ) : (
+                <div></div>
+              )}
+            </p> */}
+                        <Comment.Group minimal>
+                            <Comment>
+                                <Comment.Content>
+                                    <Grid>
+                                        <Grid.Column>
+                                            <Comment.Avatar
+                                                as="a"
+                                                src="https://react.semantic-ui.com/images/avatar/small/matt.jpg"
+                                                verticalAlign="middle"
+                                            />
+                                        </Grid.Column>
+                                        <Grid.Column width={13}>
+                                            <Comment.Author as="a">
+                                                By {comment.username}
+                                            </Comment.Author>
+                                            <Comment.Text>
+                                                {comment.text}
+                                            </Comment.Text>
+                                        </Grid.Column>
+                                        <Grid.Column width={1}>
+                                            <Button floated="right">
+                                                Edit
+                                            </Button>
+                                        </Grid.Column>
+                                    </Grid>
+                                </Comment.Content>
+                            </Comment>
+                        </Comment.Group>
+
+                        {/* {this.showEditComment(comment.username)}
+            {() => {
+              this.showDeleteComment(comment.username);
+            }} */}
+                    </div>
+                );
+            });
+        }
+    }
+
+    saveComment(id, author, username) {
+        axios
+            .post("http://localhost:5000/api/savecomment", {
+                id: id,
+                author: author,
+                text: this.state.text,
+                username: username,
+            })
+            .then((res) => {
+                document.getElementById("comment").value = "";
+                this.setState({
+                    text: "",
+                });
+                window.location.reload();
+                console.log(username);
+            })
+            .catch((err) => {
+                alert(err);
+            });
+    }
+
+    showCommentBox() {
+        if (this.props.author != "") {
+            return (
+                <div>
+                    <textarea
+                        id="comment"
+                        placeholder="Comment Here"
+                        className="form-control"
+                        onChange={this.handleCommentChange}
+                    ></textarea>
+                    <button
+                        className="btn"
+                        onClick={() => {
+                            this.saveComment(
+                                this.props.post._id,
+                                this.props.author,
+                                this.props.user
+                            );
+                        }}
+                    >
+                        Save
+                    </button>
+                </div>
+            );
+        }
+    }
+
     render() {
         return (
             <div>
@@ -137,18 +272,31 @@ class PostItem extends Component {
                 <Card.Group>
                     <Card fluid color="blue">
                         <Card.Content>
-                            <Image
-                                floated="left"
-                                size="small"
-                                src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
-                            />
-                            <Card.Header>
-                                By {this.props.post.author.username}
-                            </Card.Header>
-                            <Card.Meta>
-                                <b>{this.props.post.title}</b>
-                            </Card.Meta>
-                            <Card.Meta>{this.props.post.description}</Card.Meta>
+                            <Grid>
+                                <Grid.Column width={2}>
+                                    <Image
+                                        floated="left"
+                                        size="small"
+                                        src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
+                                        inline
+                                    />
+                                </Grid.Column>
+                                <Grid.Column width={6}>
+                                    <Card.Header>
+                                        By {this.props.post.author.username}
+                                    </Card.Header>
+                                    <Card.Meta>
+                                        <b>{this.props.post.title}</b>
+                                    </Card.Meta>
+                                    <Card.Meta>
+                                        {this.props.post.description}
+                                    </Card.Meta>
+                                </Grid.Column>
+                            </Grid>
+                        </Card.Content>
+                        <Card.Content extra>
+                            <Card.Meta>{this.showComment()}</Card.Meta>
+                            <Card.Meta>{this.showCommentBox()}</Card.Meta>
                             <Card.Description>
                                 {this.showEdit()} {this.showDelete()}
                             </Card.Description>

@@ -5,4 +5,5 @@ module.exports = (router) => {
     router.route("/post").post(postcontroller.addPost);
     router.route("/posts").get(postcontroller.getAllPosts);
     router.route("/deletePost").post(postcontroller.removePost);
+    router.route("/savecomment").post(postcontroller.saveComment);
 };
