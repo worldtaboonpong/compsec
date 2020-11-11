@@ -142,23 +142,20 @@ class PostItem extends Component {
     return deleteButton;
   }
 
-  showEditComment(username) {
-    console.log(username);
-    console.log(this.props.user);
-    let editButton;
-    if (username == this.props.user || this.props.role === 1) {
-      editButton = (
-        <div>
-          <Button color="blue">Edit</Button>
-        </div>
-      );
-    }
-    return editButton;
-  }
-
   showComment() {
     const user = this.props.user;
     const role = this.props.role;
+    
+
+    const setIsShowEditField = () => {
+      this.setState({
+        isShowEditField: true
+      })     
+    }
+
+    const isShowEditField = this.state.isShowEditField;
+
+
 
     if (this.props.post.comments instanceof Array) {
       return this.props.post.comments.map(function (comment, i) {
@@ -190,9 +187,9 @@ class PostItem extends Component {
                         By {comment.username}
                       </Comment.Author>
                       <Comment.Text>
-                        {1 === 2 ? (
+                        {isShowEditField === true && comment.username === user ? (
                           <div>
-                            <input value="world" type="text" />
+                            <input value={comment.text} type="text" />
                             <Button>Save</Button>
                           </div>
                         ) : (
@@ -205,7 +202,10 @@ class PostItem extends Component {
                         <div>
                           <Button
                             floated="right"
-                            onClick={() => console.log("clicked")}
+                            onClick={
+                              setIsShowEditField
+                              
+                            }
                           >
                             Edit
                           </Button>
