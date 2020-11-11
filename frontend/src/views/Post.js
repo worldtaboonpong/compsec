@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import axios from "axios";
 import { Switch, Route, BrowserRouter, Link } from "react-router-dom";
 import {
@@ -87,6 +87,8 @@ class PostItem extends Component {
 
     this.state = {
       text: "",
+      isShowEditField: false,
+      textBeforeEdit: "",
     };
 
     this.handleCommentChange = this.handleCommentChange.bind(this);
@@ -157,6 +159,7 @@ class PostItem extends Component {
   showComment() {
     const user = this.props.user;
     const role = this.props.role;
+
     if (this.props.post.comments instanceof Array) {
       return this.props.post.comments.map(function (comment, i) {
         return (
@@ -186,12 +189,35 @@ class PostItem extends Component {
                       <Comment.Author as="a">
                         By {comment.username}
                       </Comment.Author>
-                      <Comment.Text>{comment.text}</Comment.Text>
+                      <Comment.Text>
+                        {1 === 2 ? (
+                          <div>
+                            <input value="world" type="text" />
+                            <Button>Save</Button>
+                          </div>
+                        ) : (
+                          <div>{comment.text}</div>
+                        )}
+                      </Comment.Text>
                     </Grid.Column>
                     <Grid.Column width={1}>
                       {comment.username === user || role === 1 ? (
                         <div>
-                          <Button floated="right">Edit</Button>
+                          <Button
+                            floated="right"
+                            onClick={() => console.log("clicked")}
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                    </Grid.Column>
+                    <Grid.Column width={1}>
+                      {comment.username === user || role === 1 ? (
+                        <div>
+                          <Button floated="right">Delete</Button>
                         </div>
                       ) : (
                         <div></div>
