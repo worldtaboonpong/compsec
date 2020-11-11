@@ -1,9 +1,21 @@
 const Post = require("./../models/Post");
+const { getCurrentUser } = require("./../controllers/AuthController");
 
 module.exports = {
     addPost: (req, res, next) => {
         const savepost = req.body;
         const post = new Post(savepost);
+        let currentUser;
+        try {
+            currentUser = getCurrentUser(req);
+        } catch (err) {
+            return res.send(err);
+        }
+        console.log(currentUser);
+        console.log(post);
+        if (currentUser.id != post.author && currentUser.role != 1) {
+            return res.status(401).send("You are NOT ALLOWED");
+        }
         if (!savepost._id) {
             post.save((err, newPost) => {
                 if (err) res.send(err);
@@ -46,19 +58,41 @@ module.exports = {
                 next();
             });
     },
-    removePost: (req, res, next) => {
+    removePost: async (req, res, next) => {
+        let currentUser;
+        try {
+            currentUser = getCurrentUser(req);
+        } catch (err) {
+            return res.send(err);
+        }
         const request = req.body;
-        Post.findByIdAndRemove(request._id, (err, post) => {
-            if (err) {
-                res.send(err);
-            } else {
-                res.send({ post: post, message: "deleted" });
-            }
-        });
+        let post = await Post.findById(request._id)
+            .exec()
+            .catch((err) => res.send(err));
+        if (post.author == currentUser.id || currentUser.role == 1) {
+            Post.findByIdAndRemove(request._id, (err, post) => {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.send({ post: post, message: "deleted" });
+                }
+            });
+        } else {
+            return res.status(401).send("You are NOT ALLOWED");
+        }
     },
     saveComment: (req, res, next) => {
         const request = req.body;
         const id = request.id;
+        let currentUser;
+        try {
+            currentUser = getCurrentUser(req);
+        } catch (err) {
+            return res.send(err);
+        }
+
+        if (request.author != currentUser.id && currentUser.role != 1)
+            return res.status(401).send("You are NOT ALLOWED");
 
         Post.findById(id).exec((err, post) => {
             if (err) {

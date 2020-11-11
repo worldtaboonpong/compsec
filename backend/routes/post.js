@@ -1,9 +1,13 @@
 const postcontroller = require("./../controllers/PostController");
-
+var JwtAuthMiddleware = require("./../middewares/JwtAuthMiddleware");
 module.exports = (router) => {
-    router.route("/post/:id").get(postcontroller.getPost);
-    router.route("/post").post(postcontroller.addPost);
-    router.route("/posts").get(postcontroller.getAllPosts);
-    router.route("/deletePost").post(postcontroller.removePost);
-    router.route("/savecomment").post(postcontroller.saveComment);
+    router.route("/post/:id").get(JwtAuthMiddleware, postcontroller.getPost);
+    router.route("/post").post(JwtAuthMiddleware, postcontroller.addPost);
+    router.route("/posts").get(JwtAuthMiddleware, postcontroller.getAllPosts);
+    router
+        .route("/deletePost")
+        .post(JwtAuthMiddleware, postcontroller.removePost);
+    router
+        .route("/savecomment")
+        .post(JwtAuthMiddleware, postcontroller.saveComment);
 };
