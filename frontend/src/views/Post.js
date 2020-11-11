@@ -189,7 +189,13 @@ class PostItem extends Component {
                       <Comment.Text>{comment.text}</Comment.Text>
                     </Grid.Column>
                     <Grid.Column width={1}>
-                      <Button floated="right">Edit</Button>
+                      {comment.username === user || role === 1 ? (
+                        <div>
+                          <Button floated="right">Edit</Button>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
                     </Grid.Column>
                   </Grid>
                 </Comment.Content>
