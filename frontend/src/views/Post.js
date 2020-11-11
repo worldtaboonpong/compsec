@@ -11,6 +11,8 @@ import {
   Divider,
   Grid,
 } from "semantic-ui-react";
+import postAvatar from "./../steve.jpg";
+import commentAvatar from "./../matt.jpg";
 
 let $this;
 
@@ -176,7 +178,7 @@ class PostItem extends Component {
                     <Grid.Column>
                       <Comment.Avatar
                         as="a"
-                        src="https://react.semantic-ui.com/images/avatar/small/matt.jpg"
+                        src={commentAvatar}
                         verticalAlign="middle"
                       />
                     </Grid.Column>
@@ -267,12 +269,7 @@ class PostItem extends Component {
             <Card.Content>
               <Grid>
                 <Grid.Column width={2}>
-                  <Image
-                    floated="left"
-                    size="small"
-                    src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
-                    inline
-                  />
+                  <Image floated="left" size="small" src={postAvatar} inline />
                 </Grid.Column>
                 <Grid.Column width={6}>
                   <Card.Header>
