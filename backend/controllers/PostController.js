@@ -116,21 +116,39 @@ module.exports = {
         const request = req.body;
         const id = request.id;
 
+        let currentUser;
+        try {
+            currentUser = getCurrentUser(req);
+        } catch (err) {
+            return res.send(err);
+        }
+
         Post.findById(id).exec((err, post) => {
             if (err) {
                 res.send(err);
             }
-            post.updatecomment({
-                author: request.author,
-                text: request.text,
-                username: request.username,
-                comment_id: request.comment_id,
-            }).then((savedcomment) => {
-                return res.send({
-                    result: true,
-                    data: savedcomment,
+            if (
+                post.checkcommentauthor(
+                    {
+                        comment_id: request.comment_id,
+                    },
+                    currentUser
+                )
+            ) {
+                post.updatecomment({
+                    author: request.author,
+                    text: request.text,
+                    username: request.username,
+                    comment_id: request.comment_id,
+                }).then((savedcomment) => {
+                    return res.send({
+                        result: true,
+                        data: savedcomment,
+                    });
                 });
-            });
+            } else {
+                res.status(401).send("You are NOT ALLOWED");
+            }
         });
     },
 
@@ -138,17 +156,35 @@ module.exports = {
         const request = req.body;
         const id = request.id;
 
+        let currentUser;
+        try {
+            currentUser = getCurrentUser(req);
+        } catch (err) {
+            return res.send(err);
+        }
+
         Post.findById(id).exec((err, post) => {
             if (err) {
                 res.send(err);
             }
-            post.removecomment({
-                comment_id: request.comment_id,
-            }).then(() => {
-                return res.send({
-                    result: true,
+            if (
+                post.checkcommentauthor(
+                    {
+                        comment_id: request.comment_id,
+                    },
+                    currentUser
+                )
+            ) {
+                post.removecomment({
+                    comment_id: request.comment_id,
+                }).then(() => {
+                    return res.send({
+                        result: true,
+                    });
                 });
-            });
+            } else {
+                res.status(401).send("You are NOT ALLOWED");
+            }
         });
     },
 };
