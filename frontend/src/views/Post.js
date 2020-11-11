@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import axios from "axios";
 import { Switch, Route, BrowserRouter, Link } from "react-router-dom";
 import {
@@ -87,6 +87,9 @@ class PostItem extends Component {
 
     this.state = {
       text: "",
+      isShowEditField: false,
+      textBeforeEdit: "",
+      commentId: "",
     };
 
     this.handleCommentChange = this.handleCommentChange.bind(this);
@@ -140,23 +143,69 @@ class PostItem extends Component {
     return deleteButton;
   }
 
-  showEditComment(username) {
-    console.log(username);
-    console.log(this.props.user);
-    let editButton;
-    if (username == this.props.user || this.props.role === 1) {
-      editButton = (
-        <div>
-          <Button color="blue">Edit</Button>
-        </div>
-      );
-    }
-    return editButton;
-  }
-
   showComment() {
     const user = this.props.user;
     const role = this.props.role;
+    const author = this.props.author;
+    const postid = this.props.post._id;
+
+    const setIsShowEditField = (commentText, commentId) => {
+      this.setState({
+        isShowEditField: true,
+        text: commentText,
+        commentId: commentId,
+      });
+    };
+
+    const handleCommentChange = (e) => {
+      e.preventDefault();
+      this.setState({
+        text: e.target.value,
+      });
+      console.log("change comment");
+    };
+
+    const text = this.state.text;
+
+    const isShowEditField = this.state.isShowEditField;
+    const commentId = this.state.commentId;
+
+    const updateComment = (commentid) => {
+      console.log("update!");
+
+      axios
+        .post("http://localhost:5000/api/updatecomment", {
+          id: postid,
+          author: author,
+          text: text,
+          username: user,
+          comment_id: commentid,
+        })
+        .then((res) => {
+          window.location.reload();
+        });
+    };
+
+    const setHideEditField = () => {
+      this.setState({
+        isShowEditField: false,
+      });
+      console.log("clicked cancel");
+    };
+
+    const deleteComment = (commentId) => {
+      axios
+      .post("http://localhost:5000/api/removecomment", {
+        id: postid,
+        comment_id: commentId,
+      })
+      .then((res) => {
+        window.location.reload();
+      });
+    }
+      
+    
+
     if (this.props.post.comments instanceof Array) {
       return this.props.post.comments.map(function (comment, i) {
         return (
@@ -186,12 +235,55 @@ class PostItem extends Component {
                       <Comment.Author as="a">
                         By {comment.username}
                       </Comment.Author>
-                      <Comment.Text>{comment.text}</Comment.Text>
+                      <Comment.Text>
+                        {isShowEditField === true &&
+                        comment.username === user &&
+                        comment._id === commentId ? (
+                          <div>
+                            <input
+                              value={text}
+                              onChange={handleCommentChange}
+                              type="text"
+                            />
+                            <Button onClick={() => updateComment(comment._id)}>
+                              Save
+                            </Button>
+                            <Button onClick={() => setHideEditField()}>
+                              Cancel
+                            </Button>
+                          </div>
+                        ) : (
+                          <div>{comment.text}</div>
+                        )}
+                      </Comment.Text>
                     </Grid.Column>
                     <Grid.Column width={1}>
                       {comment.username === user || role === 1 ? (
                         <div>
-                          <Button floated="right">Edit</Button>
+                          <Button
+                            floated="right"
+                            onClick={() =>
+                              setIsShowEditField(comment.text, comment._id)
+                            }
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                    </Grid.Column>
+                    <Grid.Column width={1}>
+                      {comment.username === user || role === 1 ? (
+                        <div>
+                          <Button
+                            floated="right"
+                            onClick={() =>
+                              deleteComment(comment._id)
+                            }
+                          >
+                            Delete
+                          </Button>
                         </div>
                       ) : (
                         <div></div>

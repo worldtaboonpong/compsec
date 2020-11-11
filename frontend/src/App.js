@@ -9,8 +9,8 @@ import { render } from "react-dom";
 import { React, Component } from "react";
 import axios from "axios";
 import CreatePost from "./views/CreatePost";
-import { Menu, Container, Button, Image, Header } from 'semantic-ui-react'
-import userImage from './user.png'
+import { Menu, Container, Button, Image, Header } from "semantic-ui-react";
+import userImage from "./user.png";
 import EditPost from "./views/EditPost";
 let $this;
 
@@ -38,51 +38,89 @@ class App extends Component {
         });
     }
 
-  showName() {
-    let showname
-    if (token) {
-      const username = $this.state.username;
-      showname = <Header as='h4' style={{marginBottom: 0}}>
-                  <Image circular src= {userImage} /> {username}
-                  </Header>   
+    showName() {
+        let showname;
+        if (token) {
+            const username = $this.state.username;
+            showname = (
+                <Header as="h4" style={{ marginBottom: 0 }}>
+                    <Image circular src={userImage} /> {username}
+                </Header>
+            );
+        }
+        return showname;
     }
-    return showname;
-  }
 
-  logout() {
-    localStorage.removeItem("token");
-    this.history.push("/");
-  }
+    logout() {
+        localStorage.removeItem("token");
+        this.history.push("/");
+    }
 
-  render() {
-    return (
-      <div>
-        <Container>
-              <Menu pointing secondary size='large'>
-                <Menu.Item as='a' href='/'style={{padding: 20}}>Home</Menu.Item>
-                {token? <Menu.Item as='a' href='/post'style={{padding: 20}}>Post</Menu.Item> : null}
-                <Menu.Item position='right'style={{padding: 10}}>
-                  {token? null : <Button as='a' href='/register'style={{margin: 0}}> Register </Button>}
-                  {this.showName()}
-                  {token? <Button as='a' href='' style={{ marginLeft: '1em' }} onClick={this.logout}>Logout</Button> : 
-                  <Button as='a' href='/login' style={{ marginLeft: '0.5em' }}>Login</Button>}
-                </Menu.Item>
-              </Menu>
-        </Container>
+    render() {
+        return (
+            <div>
+                <Container>
+                    <Menu pointing secondary size="large">
+                        <Menu.Item as="a" href="/" style={{ padding: 20 }}>
+                            Home
+                        </Menu.Item>
+                        {token ? (
+                            <Menu.Item
+                                as="a"
+                                href="/post"
+                                style={{ padding: 20 }}
+                            >
+                                Post
+                            </Menu.Item>
+                        ) : null}
+                        <Menu.Item position="right" style={{ padding: 10 }}>
+                            {token ? null : (
+                                <Button
+                                    as="a"
+                                    href="/register"
+                                    style={{ margin: 0 }}
+                                >
+                                    {" "}
+                                    Register{" "}
+                                </Button>
+                            )}
+                            {this.showName()}
+                            {token ? (
+                                <Button
+                                    as="a"
+                                    href=""
+                                    style={{ marginLeft: "1em" }}
+                                    onClick={this.logout}
+                                >
+                                    Logout
+                                </Button>
+                            ) : (
+                                <Button
+                                    as="a"
+                                    href="/login"
+                                    style={{ marginLeft: "0.5em" }}
+                                >
+                                    Login
+                                </Button>
+                            )}
+                        </Menu.Item>
+                    </Menu>
+                </Container>
 
-        <div className="container">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/register" component={Register} />
-            <Route path="/login" component={Login} />
-            <Route path="/post" component={Post} />
-            <Route path="/admin" component={Admin} />
-            <Route path="/create-post" component={CreatePost} />
-          </Switch>
-        </div>
-      </div>
-    );
-  }
+                <div className="container">
+                    <Switch>
+                        <Route exact path="/" component={Home} />
+                        <Route path="/register" component={Register} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/post" component={Post} />
+                        <Route path="/admin" component={Admin} />
+                        <Route path="/create-post" component={CreatePost} />
+                        <Route path="/editPost:id" component={EditPost} />
+                    </Switch>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;
