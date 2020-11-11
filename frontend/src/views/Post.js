@@ -10,6 +10,7 @@ import {
   Header,
   Divider,
   Grid,
+  Input
 } from "semantic-ui-react";
 import postAvatar from "./../steve.jpg";
 import commentAvatar from "./../matt.jpg";
@@ -231,7 +232,7 @@ class PostItem extends Component {
                         verticalAlign="middle"
                       />
                     </Grid.Column>
-                    <Grid.Column width={13}>
+                    <Grid.Column width={10}>
                       <Comment.Author as="a">
                         By {comment.username}
                       </Comment.Author>
@@ -240,7 +241,7 @@ class PostItem extends Component {
                         comment.username === user &&
                         comment._id === commentId ? (
                           <div>
-                            <input
+                            <Input
                               value={text}
                               onChange={handleCommentChange}
                               type="text"
@@ -257,7 +258,7 @@ class PostItem extends Component {
                         )}
                       </Comment.Text>
                     </Grid.Column>
-                    <Grid.Column width={1}>
+                    <Grid.Column width={2}>
                       {comment.username === user || role === 1 ? (
                         <div>
                           <Button
@@ -273,7 +274,7 @@ class PostItem extends Component {
                         <div></div>
                       )}
                     </Grid.Column>
-                    <Grid.Column width={1}>
+                    <Grid.Column width={2}>
                       {comment.username === user || role === 1 ? (
                         <div>
                           <Button
