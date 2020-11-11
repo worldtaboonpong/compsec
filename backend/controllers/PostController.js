@@ -103,4 +103,25 @@ module.exports = {
         });
     });
   },
+
+  removeComment: (req, res, next) => {
+    const request = req.body;
+    const id = request.id;
+
+    Post.findById(id).exec((err, post) => {
+      if (err) {
+        res.send(err);
+      }
+      post
+        .removecomment({
+          comment_id: request.comment_id,
+        })
+        .then(() => {
+          return res.send({
+            result: true,
+           
+          });
+        });
+    });
+  },
 };

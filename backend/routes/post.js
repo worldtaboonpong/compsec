@@ -7,5 +7,6 @@ module.exports = (router) => {
     router.route("/deletePost").post(postcontroller.removePost);
     router.route("/savecomment").post(postcontroller.saveComment);
     router.route("/updatecomment").post(postcontroller.updateComment);
+    router.route("/removecomment").post(postcontroller.removeComment);
 
 };

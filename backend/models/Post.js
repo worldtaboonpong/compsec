@@ -36,5 +36,14 @@ PostSchema.methods.updatecomment = function(c) {
     return this.save();
 }
 
+PostSchema.methods.removecomment = function(c) {
+    for (var i in this.comments){
+        if (this.comments[i]._id == c.comment_id){
+            this.comments.splice(i,1)
+        }
+    } 
+    return this.save();
+}
+
 
 module.exports = mongoose.model('Post' , PostSchema)

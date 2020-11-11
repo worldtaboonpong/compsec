@@ -195,7 +195,7 @@ class PostItem extends Component {
 
     const deleteComment = (commentId) => {
       axios
-      .post("http://localhost:5000/api/deletecomment", {
+      .post("http://localhost:5000/api/removecomment", {
         id: postid,
         comment_id: commentId,
       })
