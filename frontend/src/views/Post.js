@@ -89,6 +89,7 @@ class PostItem extends Component {
       text: "",
       isShowEditField: false,
       textBeforeEdit: "",
+      commentId: "",
     };
 
     this.handleCommentChange = this.handleCommentChange.bind(this);
@@ -148,10 +149,11 @@ class PostItem extends Component {
     const author = this.props.author;
     const postid = this.props.post._id;
 
-    const setIsShowEditField = (commentText) => {
+    const setIsShowEditField = (commentText, commentId) => {
       this.setState({
         isShowEditField: true,
-        text: commentText
+        text: commentText,
+        commentId: commentId,
       });
     };
 
@@ -166,12 +168,13 @@ class PostItem extends Component {
     const text = this.state.text;
 
     const isShowEditField = this.state.isShowEditField;
+    const commentId = this.state.commentId;
 
     const updateComment = (commentid) => {
       console.log("update!");
 
       axios
-        .post("http://localhost:5000/api/savecomment", {
+        .post("http://localhost:5000/api/updatecomment", {
           id: postid,
           author: author,
           text: text,
@@ -179,18 +182,32 @@ class PostItem extends Component {
           comment_id: commentid,
         })
         .then((res) => {
-          // window.location.reload();
-          console.log(res)
-          console.log(commentid)
+          window.location.reload();
         });
     };
 
-   
-    if (this.props.post.comments instanceof Array) {
-      return this.props.post.comments.map(function (comment, i) {
-        
+    const setHideEditField = () => {
+      this.setState({
+        isShowEditField: false,
+      });
+      console.log("clicked cancel");
+    };
+
+    const deleteComment = (commentId) => {
+      axios
+      .post("http://localhost:5000/api/deletecomment", {
+        id: postid,
+        comment_id: commentId,
+      })
+      .then((res) => {
+        window.location.reload();
+      });
+    }
+      
     
 
+    if (this.props.post.comments instanceof Array) {
+      return this.props.post.comments.map(function (comment, i) {
         return (
           <div key={i}>
             {/* <p>
@@ -220,7 +237,8 @@ class PostItem extends Component {
                       </Comment.Author>
                       <Comment.Text>
                         {isShowEditField === true &&
-                        comment.username === user ? (
+                        comment.username === user &&
+                        comment._id === commentId ? (
                           <div>
                             <input
                               value={text}
@@ -229,6 +247,9 @@ class PostItem extends Component {
                             />
                             <Button onClick={() => updateComment(comment._id)}>
                               Save
+                            </Button>
+                            <Button onClick={() => setHideEditField()}>
+                              Cancel
                             </Button>
                           </div>
                         ) : (
@@ -239,7 +260,12 @@ class PostItem extends Component {
                     <Grid.Column width={1}>
                       {comment.username === user || role === 1 ? (
                         <div>
-                          <Button floated="right" onClick={() => setIsShowEditField(comment.text)}>
+                          <Button
+                            floated="right"
+                            onClick={() =>
+                              setIsShowEditField(comment.text, comment._id)
+                            }
+                          >
                             Edit
                           </Button>
                         </div>
@@ -250,7 +276,14 @@ class PostItem extends Component {
                     <Grid.Column width={1}>
                       {comment.username === user || role === 1 ? (
                         <div>
-                          <Button floated="right">Delete</Button>
+                          <Button
+                            floated="right"
+                            onClick={() =>
+                              deleteComment(comment._id)
+                            }
+                          >
+                            Delete
+                          </Button>
                         </div>
                       ) : (
                         <div></div>

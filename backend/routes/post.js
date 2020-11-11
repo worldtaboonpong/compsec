@@ -6,4 +6,6 @@ module.exports = (router) => {
     router.route("/posts").get(postcontroller.getAllPosts);
     router.route("/deletePost").post(postcontroller.removePost);
     router.route("/savecomment").post(postcontroller.saveComment);
+    router.route("/updatecomment").post(postcontroller.updateComment);
+
 };
