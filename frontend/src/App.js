@@ -12,6 +12,8 @@ import CreatePost from "./views/CreatePost";
 import { Menu, Container, Button, Image, Header } from "semantic-ui-react";
 import userImage from "./user.png";
 import EditPost from "./views/EditPost";
+import { ProtectedRoute } from "./protectedRoute";
+import { WithoutLoginRoute } from "./withoutLoginRoute";
 let $this;
 
 let token = localStorage.getItem("token");
@@ -110,12 +112,21 @@ class App extends Component {
                 <div className="container">
                     <Switch>
                         <Route exact path="/" component={Home} />
-                        <Route path="/register" component={Register} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/post" component={Post} />
-                        <Route path="/admin" component={Admin} />
-                        <Route path="/create-post" component={CreatePost} />
-                        <Route path="/editPost:id" component={EditPost} />
+                        <WithoutLoginRoute
+                            path="/register"
+                            component={Register}
+                        />
+                        <WithoutLoginRoute path="/login" component={Login} />
+                        <ProtectedRoute path="/post" component={Post} />
+                        <ProtectedRoute path="/admin" component={Admin} />
+                        <ProtectedRoute
+                            path="/create-post"
+                            component={CreatePost}
+                        />
+                        <ProtectedRoute
+                            path="/editPost:id"
+                            component={EditPost}
+                        />
                     </Switch>
                 </div>
             </div>
