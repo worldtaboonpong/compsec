@@ -102,10 +102,51 @@ module.exports = {
                 author: request.author,
                 text: request.text,
                 username: request.username,
+                comment_id: request.comment_id,
             }).then((savedcomment) => {
                 return res.send({
                     result: true,
                     data: savedcomment,
+                });
+            });
+        });
+    },
+
+    updateComment: (req, res, next) => {
+        const request = req.body;
+        const id = request.id;
+
+        Post.findById(id).exec((err, post) => {
+            if (err) {
+                res.send(err);
+            }
+            post.updatecomment({
+                author: request.author,
+                text: request.text,
+                username: request.username,
+                comment_id: request.comment_id,
+            }).then((savedcomment) => {
+                return res.send({
+                    result: true,
+                    data: savedcomment,
+                });
+            });
+        });
+    },
+
+    removeComment: (req, res, next) => {
+        const request = req.body;
+        const id = request.id;
+
+        Post.findById(id).exec((err, post) => {
+            if (err) {
+                res.send(err);
+            }
+            post.removecomment({
+                comment_id: request.comment_id,
+            }).then(() => {
+                return res.send({
+                    result: true,
                 });
             });
         });

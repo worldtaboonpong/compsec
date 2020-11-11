@@ -10,4 +10,6 @@ module.exports = (router) => {
     router
         .route("/savecomment")
         .post(JwtAuthMiddleware, postcontroller.saveComment);
+    router.route("/updatecomment").post(postcontroller.updateComment);
+    router.route("/removecomment").post(postcontroller.removeComment);
 };

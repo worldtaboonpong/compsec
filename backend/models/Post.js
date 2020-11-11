@@ -24,6 +24,24 @@ let PostSchema = new mongoose.Schema(
 
 PostSchema.methods.comment = function(c) {
     this.comments.push(c);
+    return this.save();  
+}
+
+PostSchema.methods.updatecomment = function(c) {
+    for (var i in this.comments){
+        if (this.comments[i]._id == c.comment_id){
+            this.comments[i] = c
+        }
+    } 
+    return this.save();
+}
+
+PostSchema.methods.removecomment = function(c) {
+    for (var i in this.comments){
+        if (this.comments[i]._id == c.comment_id){
+            this.comments.splice(i,1)
+        }
+    } 
     return this.save();
 }
 
