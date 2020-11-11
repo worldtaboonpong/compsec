@@ -68,6 +68,7 @@ module.exports = {
                 author: request.author,
                 text: request.text,
                 username: request.username,
+                comment_id : request.comment_id
             }).then((savedcomment) => {
                 return res.send({
                     result: true,

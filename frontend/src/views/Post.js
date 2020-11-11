@@ -145,20 +145,52 @@ class PostItem extends Component {
   showComment() {
     const user = this.props.user;
     const role = this.props.role;
-    
+    const author = this.props.author;
+    const postid = this.props.post._id;
 
-    const setIsShowEditField = () => {
+    const setIsShowEditField = (commentText) => {
       this.setState({
-        isShowEditField: true
-      })     
-    }
+        isShowEditField: true,
+        text: commentText
+      });
+    };
+
+    const handleCommentChange = (e) => {
+      e.preventDefault();
+      this.setState({
+        text: e.target.value,
+      });
+      console.log("change comment");
+    };
+
+    const text = this.state.text;
 
     const isShowEditField = this.state.isShowEditField;
 
+    const updateComment = (commentid) => {
+      console.log("update!");
 
+      axios
+        .post("http://localhost:5000/api/savecomment", {
+          id: postid,
+          author: author,
+          text: text,
+          username: user,
+          comment_id: commentid,
+        })
+        .then((res) => {
+          // window.location.reload();
+          console.log(res)
+          console.log(commentid)
+        });
+    };
 
+   
     if (this.props.post.comments instanceof Array) {
       return this.props.post.comments.map(function (comment, i) {
+        
+    
+
         return (
           <div key={i}>
             {/* <p>
@@ -187,10 +219,17 @@ class PostItem extends Component {
                         By {comment.username}
                       </Comment.Author>
                       <Comment.Text>
-                        {isShowEditField === true && comment.username === user ? (
+                        {isShowEditField === true &&
+                        comment.username === user ? (
                           <div>
-                            <input value={comment.text} type="text" />
-                            <Button>Save</Button>
+                            <input
+                              value={text}
+                              onChange={handleCommentChange}
+                              type="text"
+                            />
+                            <Button onClick={() => updateComment(comment._id)}>
+                              Save
+                            </Button>
                           </div>
                         ) : (
                           <div>{comment.text}</div>
@@ -200,13 +239,7 @@ class PostItem extends Component {
                     <Grid.Column width={1}>
                       {comment.username === user || role === 1 ? (
                         <div>
-                          <Button
-                            floated="right"
-                            onClick={
-                              setIsShowEditField
-                              
-                            }
-                          >
+                          <Button floated="right" onClick={() => setIsShowEditField(comment.text)}>
                             Edit
                           </Button>
                         </div>

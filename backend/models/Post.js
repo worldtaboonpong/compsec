@@ -25,6 +25,16 @@ let PostSchema = new mongoose.Schema(
 PostSchema.methods.comment = function(c) {
     this.comments.push(c);
     return this.save();
+    // if (!c.comment_id) {
+    //     this.comments.push(c)
+    //     return this.save();
+    // } else {
+    //     const index = this.comments.findIndex ((comment) => {
+    //         comment.id == c.comment_id
+    //     })
+    //     return index       
+    // }
+    
 }
 
 
