@@ -1,19 +1,25 @@
-const config = require('../config')
+const config = require("../config");
 const jwt = require("jsonwebtoken");
 
-module.exports = function(req,res,next){
-    if (!req.headers){
-        return res.status(401).send({auth:false, message:'No token provided'});
-    
+module.exports = function (req, res, next) {
+    if (!req.headers) {
+        return res
+            .status(401)
+            .send({ auth: false, message: "No token provided" });
     }
-    var token = req.headers['x-access-token'];
+    var token = req.headers["x-access-token"];
     if (!token) {
-        return res.status(401).send( {auth:false,message:'No token provided'})
+        return res
+            .status(401)
+            .send({ auth: false, message: "No token provided" });
     }
-    jwt.verify(token , config.secret, function(err,decoded){
-        if (err) { 
-            return res.status(500).send({auth:false,message:'Failed to authenticate'})
+    jwt.verify(token, config.secret, function (err, decoded) {
+        if (err) {
+            return res
+                .status(500)
+                .send({ auth: false, message: "Failed to authenticate" });
         }
+        // console.log(decoded);
         next();
-    })
-}
+    });
+};

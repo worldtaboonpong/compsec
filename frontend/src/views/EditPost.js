@@ -10,6 +10,7 @@ class EditPost extends Component {
             _id: "",
             title: "",
             description: "",
+            author: "",
         };
 
         $this = this;
@@ -28,6 +29,7 @@ class EditPost extends Component {
                     $this.setState({
                         title: res.data.title,
                         description: res.data.description,
+                        author: res.data.author,
                     });
                     console.log(res.data);
                 })
@@ -67,6 +69,7 @@ class EditPost extends Component {
             _id: $this.state._id,
             title: $this.state.title,
             description: $this.state.description,
+            author: $this.state.author,
         };
         axios
             .post("http://localhost:5000/api/post", post)
