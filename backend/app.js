@@ -26,6 +26,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
+const helmet = require("helmet");
+app.use(helmet());
+
 app.use("/api", router);
 
 app.listen(5000, () => console.log("Server is running"));

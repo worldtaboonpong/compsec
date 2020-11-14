@@ -13,7 +13,7 @@ module.exports = {
                 user.password
             );
             if (!passwordIsValid) {
-                return res.status(401).send({ auth: false, token: null });
+                return res.status(401).json({ auth: false, token: null, message: "Wrong Password!" });
             }
             var token = jwt.sign(
                 {

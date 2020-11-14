@@ -122,7 +122,7 @@ class PostItem extends Component {
       .post("http://localhost:5000/api/deletePost", { _id: id })
       .then((res) => {
         console.log(res.data);
-        $this.props.history.push("/post");
+        window.location.reload();
       })
       .catch((err) => {
         alert("error", err);
@@ -136,9 +136,7 @@ class PostItem extends Component {
       this.props.role === 1
     ) {
       deleteButton = (
-        <a href="" onClick={() => this.delete(this.props.post._id)}>
-          <Button color="red">Delete</Button>
-        </a>
+          <Button color="red" onClick={() => this.delete(this.props.post._id)}>Delete</Button>
       );
     }
     return deleteButton;

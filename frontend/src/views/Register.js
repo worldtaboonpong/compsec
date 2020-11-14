@@ -69,9 +69,10 @@ class Register extends Component {
   handlePasswordChange(e) {
     e.preventDefault();
     let formErrors = $this.state.formErrors;
+    let validation = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
     formErrors.password =
-      e.target.value.length < 6 && e.target.value.length > 0
-        ? "Minimum 6 characters required"
+      e.target.value.match(validation) == null
+        ? "Password needs to be between 8 to 15 characters and contains at least one lowercase letter, one uppercase letter, one numeric digit, and one special character"
         : "";
     $this.setState({
       formErrors,

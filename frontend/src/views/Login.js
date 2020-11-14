@@ -52,8 +52,14 @@ class Login extends Component {
 
       }
     }).catch((err) => {
-        alert('Something wrong');
-        console.log(err);
+      if (err.response.data.message) {
+        alert(err.response.data.message)
+      } else if (err.response.status==429){
+        alert("Reach Maximum, please retry in next 15 minutes")
+      } else {
+        alert("Something Wrong")
+      }
+        console.log(err.response);
         
     })
   }
