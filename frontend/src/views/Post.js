@@ -10,7 +10,8 @@ import {
   Header,
   Divider,
   Grid,
-  Input
+  Input,
+  Icon
 } from "semantic-ui-react";
 import postAvatar from "./../steve.jpg";
 import commentAvatar from "./../matt.jpg";
@@ -73,8 +74,7 @@ class Post extends Component {
       <div>
         <h1>Post</h1>
         <Link to="/create-post">
-          {/* <button className="btn btn-default">Create Post</button> */}
-          <Button color="blue">Create Post</Button>
+          <Button style = {{margin: "0px 0px 10px 0px"}} color="blue">Create Post</Button>
         </Link>
         <div>{this.showPost()}</div>
       </div>
@@ -104,7 +104,7 @@ class PostItem extends Component {
     ) {
       editButton = (
         <Link to={"/editPost" + this.props.post._id}>
-          <Button color="blue">Edit</Button>
+          <Button color="blue">Edit Post</Button>
         </Link>
       );
     }
@@ -201,102 +201,58 @@ class PostItem extends Component {
       .then((res) => {
         window.location.reload();
       });
-    }
-      
-    
+    }   
 
     if (this.props.post.comments instanceof Array) {
       return this.props.post.comments.map(function (comment, i) {
         return (
           <div key={i}>
-            {/* <p>
-              {comment.text} by {comment.username}
-              {comment.username === user || role === 1 ? (
-                <div>
-                  <button>Edit</button>
-                </div>
-              ) : (
-                <div></div>
-              )}
-            </p> */}
-            <Comment.Group minimal>
-              <Comment>
+            <Comment.Group>
+              <Comment 
+              style = {{margin: "0px 0px 14px 0px"}}
+              >
+                <Comment.Avatar
+                  as="a"
+                  src={commentAvatar}
+                  verticalAlign="middle"
+                />
                 <Comment.Content>
-                  <Grid>
-                    <Grid.Column>
-                      <Comment.Avatar
-                        as="a"
-                        src={commentAvatar}
-                        verticalAlign="middle"
-                      />
-                    </Grid.Column>
-                    <Grid.Column width={10}>
-                      <Comment.Author as="a">
-                        By {comment.username}
-                      </Comment.Author>
-                      <Comment.Text>
-                        {isShowEditField === true &&
-                        (comment.username === user || role === 1) &&
-                        comment._id === commentId ? (
-                          <div>
-                            <Input
-                              value={text}
-                              onChange={handleCommentChange}
-                              type="text"
-                            />
-                            <Button onClick={() => updateComment(comment._id)}>
-                              Save
-                            </Button>
-                            <Button onClick={() => setHideEditField()}>
-                              Cancel
-                            </Button>
-                          </div>
-                        ) : (
-                          <div>{comment.text}</div>
-                        )}
-                      </Comment.Text>
-                    </Grid.Column>
-                    <Grid.Column width={2}>
-                      {comment.username === user || role === 1 ? (
-                        <div>
-                          <Button
-                            floated="right"
-                            onClick={() =>
-                              setIsShowEditField(comment.text, comment._id)
-                            }
-                          >
-                            Edit
-                          </Button>
-                        </div>
-                      ) : (
-                        <div></div>
-                      )}
-                    </Grid.Column>
-                    <Grid.Column width={2}>
-                      {comment.username === user || role === 1 ? (
-                        <div>
-                          <Button
-                            floated="right"
-                            onClick={() =>
-                              deleteComment(comment._id)
-                            }
-                          >
-                            Delete
-                          </Button>
-                        </div>
-                      ) : (
-                        <div></div>
-                      )}
-                    </Grid.Column>
-                  </Grid>
+                <Comment.Author as="a">By {comment.username}</Comment.Author>
+                <Comment.Text>
+                  {isShowEditField === true &&
+                  comment.username === user &&
+                  comment._id === commentId ? (
+                    <div>
+                      <Input
+                        fluid 
+                        value={text}
+                        onChange={handleCommentChange}
+                        type="text"
+                      >
+                        <input />
+                      <Button onClick={() => updateComment(comment._id)}>
+                        Save
+                      </Button>
+                      <Button onClick={() => setHideEditField()}>
+                        Cancel
+                      </Button>
+                      </Input>
+                    </div>
+                  ) : (
+                    <div>{comment.text}</div>
+                  )}            
+                </Comment.Text>
+                <Comment.Actions>
+                {(comment.username === user || role === 1) ? 
+                    <div>
+                      <Comment.Action onClick={() => setIsShowEditField(comment.text, comment._id)}>Edit</Comment.Action>
+                      <Comment.Action onClick={() => deleteComment(comment._id)}>Delete</Comment.Action>
+                    </div>
+                         : null }
+                  </Comment.Actions>
                 </Comment.Content>
               </Comment>
             </Comment.Group>
-
-            {/* {this.showEditComment(comment.username)}
-            {() => {
-              this.showDeleteComment(comment.username);
-            }} */}
           </div>
         );
       });
@@ -330,9 +286,10 @@ class PostItem extends Component {
             placeholder="Comment Here"
             className="form-control"
             onChange={this.handleCommentChange}
+            style = {{margin: "0px 0px 9px 0px"}}
           ></textarea>
-          <button
-            className="btn"
+          <Button 
+            compact
             onClick={() => {
               this.saveComment(
                 this.props.post._id,
@@ -341,8 +298,9 @@ class PostItem extends Component {
               );
             }}
           >
-            Save
-          </button>
+            Add a comment
+            <Icon name='angle right'/>
+          </Button>
         </div>
       );
     }
@@ -351,16 +309,6 @@ class PostItem extends Component {
   render() {
     return (
       <div>
-        {/* <div>
-          <h1>Title</h1>
-          <p>{this.props.post.title}</p>
-          <h1>Description</h1>
-          <p>{this.props.post.description}</p>
-          <h1>By</h1>
-          <p>{this.props.post.author.username}</p>
-          {this.showEdit()}
-          {this.showDelete()}
-        </div> */}
         <Card.Group>
           <Card fluid color="blue">
             <Card.Content>
