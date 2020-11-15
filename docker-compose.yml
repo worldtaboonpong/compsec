@@ -25,12 +25,16 @@ services:
 
   nginx:
     container_name: nginx
-    build: ./nginx
+    image: staticfloat/nginx-certbot
     ports:
       - 443:443
-    # networks:
-    #   - frontend
-    #   - backend
+    environment:
+      CERTBOT_EMAIL: owner@company.com
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/user.conf.d:ro
+      - letsencrypt:/etc/letsencrypt
+volumes:
+  letsencrypt:
 
 # networks: 
 #   frontend:
