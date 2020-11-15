@@ -35,7 +35,7 @@ class Register extends Component {
 
   componentDidMount() {
     setTimeout(function () {
-      axios.get("http://localhost/api/auth/user").then((res) => {
+      axios.get("/api/auth/user").then((res) => {
         $this.props.history.push("/");
         console.log(res.data);
       });
@@ -100,7 +100,7 @@ class Register extends Component {
         password: $this.state.password,
         username: $this.state.username,
       };
-      axios.post("http://localhost/api/user", user).then((res) => {
+      axios.post("/api/user", user).then((res) => {
         $this.props.history.push("/login");
       });
     } else {

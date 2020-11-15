@@ -22,7 +22,7 @@ class EditPost extends Component {
         setTimeout(function () {
             axios
                 .get(
-                    "http://localhost/api/post/" +
+                    "/api/post/" +
                         $this.props.match.params.id
                 )
                 .then((res) => {
@@ -39,7 +39,7 @@ class EditPost extends Component {
         });
         setTimeout(function () {
             axios
-                .get("http://localhost/api/auth/user")
+                .get("/api/auth/user")
                 .then((res) => {
                     console.log(res.data);
                 })
@@ -72,7 +72,7 @@ class EditPost extends Component {
             author: $this.state.author,
         };
         axios
-            .post("http://localhost/api/post", post)
+            .post("/api/post", post)
             .then((res) => {
                 $this.props.history.push("/post");
             })

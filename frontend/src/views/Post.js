@@ -32,7 +32,7 @@ class Post extends Component {
     $this = this;
   }
   componentDidMount() {
-    axios.get("http://localhost/api/posts").then((res) => {
+    axios.get("/api/posts").then((res) => {
       $this.setState({
         posts: res.data,
       });
@@ -40,7 +40,7 @@ class Post extends Component {
 
     setTimeout(function () {
       axios
-        .get("http://localhost/api/auth/user")
+        .get("/api/auth/user")
         .then((res) => {
           $this.setState({
             user: res.data.username,
@@ -119,7 +119,7 @@ class PostItem extends Component {
 
   delete(id) {
     axios
-      .post("http://localhost/api/deletePost", { _id: id })
+      .post("/api/deletePost", { _id: id })
       .then((res) => {
         console.log(res.data);
         window.location.reload();
@@ -173,7 +173,7 @@ class PostItem extends Component {
       console.log("update!");
 
       axios
-        .post("http://localhost/api/updatecomment", {
+        .post("/api/updatecomment", {
           id: postid,
           author: author,
           text: text,
@@ -194,7 +194,7 @@ class PostItem extends Component {
 
     const deleteComment = (commentId) => {
       axios
-      .post("http://localhost/api/removecomment", {
+      .post("/api/removecomment", {
         id: postid,
         comment_id: commentId,
       })
@@ -261,7 +261,7 @@ class PostItem extends Component {
 
   saveComment(id, author, username) {
     axios
-      .post("http://localhost/api/savecomment", {
+      .post("/api/savecomment", {
         id: id,
         author: author,
         text: this.state.text,

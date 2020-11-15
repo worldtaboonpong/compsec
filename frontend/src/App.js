@@ -31,7 +31,7 @@ class App extends Component {
 
     componentDidMount() {
         setTimeout(function () {
-            axios.get("http://localhost/api/auth/user").then((res) => {
+            axios.get("/api/auth/user").then((res) => {
                 $this.setState({
                     username: res.data.username,
                     role: res.data.role,

@@ -14,7 +14,7 @@ class Login extends Component {
   }
   componentDidMount(){
     setTimeout(function(){
-        axios.get("http://localhost/api/auth/user").then((res) => {
+        axios.get("/api/auth/user").then((res) => {
             $this.props.history.push("/");
             console.log(res.data);
         })
@@ -36,7 +36,7 @@ class Login extends Component {
       email: $this.state.email,
       password: $this.state.password,
     };
-    axios.post("http://localhost/api/auth/login", user).then((res) => {
+    axios.post("/api/auth/login", user).then((res) => {
       
 
       if(res.data.auth === true){
