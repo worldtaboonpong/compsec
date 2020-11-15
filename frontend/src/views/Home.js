@@ -15,7 +15,7 @@ class Home extends Component {
         window.location.reload();
     }
     setTimeout(function () {
-      axios.get("http://localhost:5000/api/auth/user").then((res) => {
+      axios.get("http://localhost/api/auth/user").then((res) => {
         console.log(res.data.username);
         console.log(localStorage.getItem("token"))
       });

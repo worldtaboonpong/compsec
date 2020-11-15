@@ -17,7 +17,7 @@ class CreatePost extends Component {
   componentDidMount() {
     setTimeout(function () {
       axios
-        .get("http://localhost:5000/api/auth/user")
+        .get("http://localhost/api/auth/user")
         .then((res) => {
             $this.setState({
                 author : res.data.id
@@ -52,7 +52,7 @@ class CreatePost extends Component {
       author: $this.state.author
     };
     axios
-      .post("http://localhost:5000/api/post", post)
+      .post("http://localhost/api/post", post)
       .then((res) => {
         $this.props.history.push("/post");
       })

@@ -12,7 +12,7 @@ class Admin extends Component {
   }
   componentDidMount() {
     setTimeout(function () {
-      axios.get("http://localhost:5000/api/auth/user").then((res) => {
+      axios.get("http://localhost/api/auth/user").then((res) => {
         $this.setState({
             role: res.data.role
         })

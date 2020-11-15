@@ -4,9 +4,34 @@ services:
   frontend:
     container_name: frontend
     build: ./frontend
-    ports: 
-      - 3000:3000
-    volumes: 
-      - ./frontend:/frontend
-      - frontend/node_modules
-    command: npm start
+    expose: 
+      - 3000
+    # volumes: 
+    #   - ./frontend:/frontend
+    #   - frontend/node_modules
+    # networks:
+    #   - frontend
+
+  backend:
+    container_name: backend
+    build: ./backend
+    expose: 
+      - 5000
+    # volumes: 
+    #   - ./backend:/backend
+    #   - backend/node_modules
+    # networks:
+    #   - backend
+
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - 80:80
+    # networks:
+    #   - frontend
+    #   - backend
+
+# networks: 
+#   frontend:
+#   backend:
