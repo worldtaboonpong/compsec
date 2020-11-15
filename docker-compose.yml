@@ -29,7 +29,7 @@ services:
     ports:
       - 443:443
     environment:
-      CERTBOT_EMAIL: owner@company.com
+      CERTBOT_EMAIL: knot131-wr@hotmail.com
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/user.conf.d:ro
       - letsencrypt:/etc/letsencrypt
