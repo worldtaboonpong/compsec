@@ -11,8 +11,6 @@ module.exports = {
         } catch (err) {
             return res.send(err);
         }
-        console.log(currentUser);
-        console.log(post);
         if (currentUser.id != post.author && currentUser.role != 1) {
             return res.status(401).send("You are NOT ALLOWED");
         }

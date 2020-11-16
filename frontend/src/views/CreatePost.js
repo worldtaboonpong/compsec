@@ -22,7 +22,6 @@ class CreatePost extends Component {
             $this.setState({
                 author : res.data.id
             })
-          console.log(res.data);
         })
         .catch((err) => {
           $this.props.history.push("/login");

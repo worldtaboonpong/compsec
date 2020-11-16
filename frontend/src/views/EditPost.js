@@ -31,7 +31,6 @@ class EditPost extends Component {
                         description: res.data.description,
                         author: res.data.author,
                     });
-                    console.log(res.data);
                 })
                 .catch((err) => {
                     $this.props.history.push("/login");
@@ -41,7 +40,7 @@ class EditPost extends Component {
             axios
                 .get("/api/auth/user")
                 .then((res) => {
-                    console.log(res.data);
+                    // console.log(res.data);
                 })
                 .catch((err) => {
                     $this.props.history.push("/login");

@@ -37,7 +37,6 @@ class Register extends Component {
     setTimeout(function () {
       axios.get("/api/auth/user").then((res) => {
         $this.props.history.push("/");
-        console.log(res.data);
       });
     });
   }

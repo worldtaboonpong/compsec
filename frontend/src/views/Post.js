@@ -47,7 +47,6 @@ class Post extends Component {
             role: res.data.role,
             author: res.data.id,
           });
-          console.log(res.data);
         })
         .catch((err) => {
           $this.props.history.push("/login");
@@ -57,7 +56,6 @@ class Post extends Component {
 
   showPost() {
     return $this.state.posts.map(function (post) {
-      console.log(post);
       return (
         <PostItem
           post={post}
@@ -121,7 +119,6 @@ class PostItem extends Component {
     axios
       .post("/api/deletePost", { _id: id })
       .then((res) => {
-        console.log(res.data);
         window.location.reload();
       })
       .catch((err) => {
@@ -273,7 +270,6 @@ class PostItem extends Component {
           text: "",
         });
         window.location.reload();
-        console.log(username);
       });
   }
 

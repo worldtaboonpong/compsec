@@ -21,7 +21,6 @@ class Admin extends Component {
         $this.props.history.push("/login");
       });
     }, );
-    console.log($this.state.role)
   }
   
   protectedRoute(){

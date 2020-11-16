@@ -16,7 +16,6 @@ class Login extends Component {
     setTimeout(function(){
         axios.get("/api/auth/user").then((res) => {
             $this.props.history.push("/");
-            console.log(res.data);
         })
     }, )
   }
@@ -60,7 +59,6 @@ class Login extends Component {
         alert("Something Wrong")
       }
         console.log(err.response);
-        
     })
   }
   render() {

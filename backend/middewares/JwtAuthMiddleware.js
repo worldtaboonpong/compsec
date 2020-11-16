@@ -19,7 +19,6 @@ module.exports = function (req, res, next) {
                 .status(500)
                 .send({ auth: false, message: "Failed to authenticate" });
         }
-        // console.log(decoded);
         next();
     });
 };
