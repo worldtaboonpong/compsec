@@ -57,7 +57,7 @@ class CreatePost extends Component {
       })
       .catch((err) => {
         alert("Something wrong");
-        console.log(err);
+        // console.log(err);
       });
   }
 

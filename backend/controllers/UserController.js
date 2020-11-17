@@ -4,6 +4,10 @@ const { getCurrentUser } = require("./../controllers/AuthController");
 
 module.exports = {
     addUser: (req, res, next) => {
+        let validation = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+        if (req.body.username.length < 6 || req.body.password.match(validation) == null || !(/\S+@\S+\.\S+/.test(req.body.email))) {
+            return res.status(400).send("Please follow the rules")
+        }
         if (req.body.password) {
             var hashedPassword = bcrypt.hashSync(req.body.password, 8);
             req.body.password = hashedPassword;

@@ -58,7 +58,7 @@ class Login extends Component {
       } else {
         alert("Something Wrong")
       }
-        console.log(err.response);
+        // console.log(err.response);
     })
   }
   render() {

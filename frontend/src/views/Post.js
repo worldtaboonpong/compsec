@@ -158,7 +158,7 @@ class PostItem extends Component {
       this.setState({
         text: e.target.value,
       });
-      console.log("change comment");
+      // console.log("change comment");
     };
 
     const text = this.state.text;
@@ -167,7 +167,7 @@ class PostItem extends Component {
     const commentId = this.state.commentId;
 
     const updateComment = (commentid) => {
-      console.log("update!");
+      // console.log("update!");
 
       axios
         .post("/api/updatecomment", {
@@ -186,7 +186,7 @@ class PostItem extends Component {
       this.setState({
         isShowEditField: false,
       });
-      console.log("clicked cancel");
+      // console.log("clicked cancel");
     };
 
     const deleteComment = (commentId) => {
