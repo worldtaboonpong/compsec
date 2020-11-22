@@ -217,7 +217,7 @@ class PostItem extends Component {
                 <Comment.Author as="a">By {comment.username}</Comment.Author>
                 <Comment.Text>
                   {isShowEditField === true &&
-                  comment.username === user &&
+                  (comment.username === user || role === 1) &&
                   comment._id === commentId ? (
                     <div>
                       <Input
